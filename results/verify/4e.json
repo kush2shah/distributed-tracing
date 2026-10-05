@@ -1,0 +1,43 @@
+{
+  "case": "4e",
+  "title": "langsmith.* attributes stamped on every Strands span",
+  "harness_run": "9f41fef7-3db7-4d3e-8171-bbafb1204ec9",
+  "root_run_id": "01a10e25-1c55-79c1-95b1-f508963a2cc8",
+  "result": "PASS",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_strands",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "strands:handle",
+      "ancestor": "call_strands",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "invoke_agent*",
+      "ancestor": "strands:handle",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "*strands_get_weather*",
+      "ancestor": "invoke_agent*",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "runner_error": null
+}

@@ -1,0 +1,51 @@
+{
+  "case": "4c",
+  "title": "Parent tracing_mode=otel (all-OTel both sides), W3C traceparent",
+  "harness_run": "52ef2227-7d71-40d6-ad31-dc25729ddb06",
+  "root_run_id": "01a10e23-fe96-71b3-8dd9-bfd0eeb7fde1",
+  "result": "FAIL",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_strands",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "send_to_strands",
+      "ancestor": "call_strands",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "strands:handle",
+      "ancestor": "send_to_strands",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "MISSING"
+    },
+    {
+      "name": "invoke_agent*",
+      "ancestor": "strands:handle",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "MISSING"
+    },
+    {
+      "name": "*strands_get_weather*",
+      "ancestor": "invoke_agent*",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "MISSING"
+    }
+  ],
+  "runner_error": null
+}

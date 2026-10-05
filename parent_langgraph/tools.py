@@ -104,15 +104,49 @@ def _otel_headers() -> dict[str, str]:
     return headers
 
 
+_pure_otel_tracer = None
+
+
+def _pure_otel_span_headers():
+    """4f: a plain OpenTelemetry span (no LangSmith SDK) exported straight to
+    LangSmith's OTel endpoint, as in the docs' Service A -> Service B example."""
+    global _pure_otel_tracer
+    import os
+
+    from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+    from opentelemetry.sdk.trace import TracerProvider
+    from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+
+    if _pure_otel_tracer is None:
+        provider = TracerProvider()
+        api_url = os.environ.get("LANGSMITH_ENDPOINT", "https://api.smith.langchain.com").rstrip("/")
+        provider.add_span_processor(SimpleSpanProcessor(OTLPSpanExporter(
+            endpoint=f"{api_url}/otel/v1/traces",
+            headers={"x-api-key": os.environ["LANGSMITH_API_KEY"], "Langsmith-Project": config.PRIMARY_PROJECT},
+        )))
+        _pure_otel_tracer = provider.get_tracer("parent_pure_otel")
+    return _pure_otel_tracer
+
+
+async def _post_strands(route: str, question: str, headers: dict) -> str:
+    async with httpx.AsyncClient(timeout=120) as client:
+        resp = await client.post(f"{config.url('strands_service')}/run/{route}", json={"message": question}, headers=headers)
+    return resp.text
+
+
 def strands_tool(variant: str) -> BaseTool:
-    route = "otel" if variant in ("4b", "4c") else variant
+    route = "otel" if variant in ("4b", "4c", "4f") else variant
 
     @tool
     async def call_strands(question: str) -> str:
         """Ask the Strands weather agent a question."""
+        if variant == "4f":
+            with _pure_otel_span_headers().start_as_current_span("otel:send_to_strands") as span:
+                span.set_attribute("langsmith.metadata.harness_run", harness_run.get() or "")
+                headers = {HARNESS_RUN_HEADER: harness_run.get() or ""}
+                propagate.inject(headers)
+                return _note("call_strands", await _post_strands(route, question, headers))
         headers = _otel_headers() if route == "otel" else outbound_headers()
-        async with httpx.AsyncClient(timeout=120) as client:
-            resp = await client.post(f"{config.url('strands_service')}/run/{route}", json={"message": question}, headers=headers)
-        return _note("call_strands", resp.text)
+        return _note("call_strands", await _post_strands(route, question, headers))
 
     return call_strands

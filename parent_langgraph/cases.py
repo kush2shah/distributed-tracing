@@ -125,6 +125,10 @@ CASES: dict[str, Case] = {
     "4e": Case("langsmith.* attributes stamped on every Strands span", _sync(t.strands_tool("4e")), WEATHER,
                [Check("call_strands"), Check("strands:handle", "call_strands", expect="?")]
                + [Check(c.name, c.ancestor, expect="?") for c in STRANDS_NATIVE[2:]]),
+    "4f": Case("Pure-OTel span on the parent side (no LangSmith SDK for this hop), W3C traceparent", _sync(t.strands_tool("4f")), WEATHER,
+               [Check("call_strands"), Check("otel:send_to_strands", "call_strands", expect="?"),
+                Check("strands:handle", "otel:send_to_strands", expect="?"), Check("invoke_agent*", "strands:handle", expect="?"),
+                Check("*strands_get_weather*", "invoke_agent*", expect="?")]),
     # 5: three hops, grandchildren in MCP
     "5": Case("LangGraph -> child LangGraph -> MCP", _sync(t.child_remotegraph_tool("child")), WEATHER_AND_ADD, _three_hop([P])),
     # 6: case 5 plus replicas

@@ -1,0 +1,43 @@
+{
+  "case": "4a",
+  "title": "LangSmith headers + tracing_context(parent=) around Strands",
+  "harness_run": "802677a5-defd-4720-91b8-9590960f0f80",
+  "root_run_id": "01a10e22-bde0-74f1-b2cc-838c490d7171",
+  "result": "FAIL",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_strands",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "strands:handle",
+      "ancestor": "call_strands",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "invoke_agent*",
+      "ancestor": "strands:handle",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "own trace rooted at 'POST /run/{variant}'",
+      "status": "SPLIT"
+    },
+    {
+      "name": "*strands_get_weather*",
+      "ancestor": "invoke_agent*",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "own trace rooted at 'POST /run/{variant}'",
+      "status": "SPLIT"
+    }
+  ],
+  "runner_error": null
+}

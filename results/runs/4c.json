@@ -1,0 +1,60 @@
+{
+  "case": "4c",
+  "title": "Parent tracing_mode=otel (all-OTel both sides), W3C traceparent",
+  "harness_run": "52ef2227-7d71-40d6-ad31-dc25729ddb06",
+  "started_at": "2026-10-05T22:16:42.363730+00:00",
+  "root_run_id": "01a10e23-fe96-71b3-8dd9-bfd0eeb7fde1",
+  "checks": [
+    {
+      "name": "call_strands",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "send_to_strands",
+      "ancestor": "call_strands",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "strands:handle",
+      "ancestor": "send_to_strands",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "invoke_agent*",
+      "ancestor": "strands:handle",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "*strands_get_weather*",
+      "ancestor": "invoke_agent*",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 80\u00b0F and humid.",
+    "tools": {
+      "traceparent": [
+        "00-01a10e23fe9671b38dd9bfd0eeb7fde1-01a10e24010d7d00-01"
+      ],
+      "call_strands": [
+        "{\"output\":\"The weather in San Francisco is currently 80\u00b0F and humid.\\n\",\"variant\":\"otel\"}"
+      ]
+    }
+  }
+}

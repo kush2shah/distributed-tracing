@@ -1,0 +1,51 @@
+{
+  "case": "4f",
+  "title": "Pure-OTel span on the parent side (no LangSmith SDK for this hop), W3C traceparent",
+  "harness_run": "4f104215-e553-4647-b6c9-0a0f2e89fca5",
+  "root_run_id": "01a10e27-a510-7203-8d53-6b5c18344973",
+  "result": "FAIL",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_strands",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "otel:send_to_strands",
+      "ancestor": "call_strands",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "own trace rooted at 'otel:send_to_strands'",
+      "status": "SPLIT"
+    },
+    {
+      "name": "strands:handle",
+      "ancestor": "otel:send_to_strands",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "own trace rooted at 'otel:send_to_strands'",
+      "status": "SPLIT"
+    },
+    {
+      "name": "invoke_agent*",
+      "ancestor": "strands:handle",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "own trace rooted at 'otel:send_to_strands'",
+      "status": "SPLIT"
+    },
+    {
+      "name": "*strands_get_weather*",
+      "ancestor": "invoke_agent*",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "own trace rooted at 'otel:send_to_strands'",
+      "status": "SPLIT"
+    }
+  ],
+  "runner_error": null
+}

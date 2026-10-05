@@ -1,0 +1,49 @@
+{
+  "case": "4d",
+  "title": "langsmith.* attributes on one wrapper span (docs)",
+  "harness_run": "0a6348c1-c695-4cae-b397-c0a2619dfe80",
+  "started_at": "2026-10-05T22:17:18.988710+00:00",
+  "root_run_id": "01a10e24-8da7-7240-84b7-35eb8f771e9c",
+  "checks": [
+    {
+      "name": "call_strands",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "strands:handle",
+      "ancestor": "call_strands",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "invoke_agent*",
+      "ancestor": "strands:handle",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "*strands_get_weather*",
+      "ancestor": "invoke_agent*",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 80\u00b0F and humid.",
+    "tools": {
+      "call_strands": [
+        "{\"output\":\"The weather in San Francisco is currently 80\u00b0F and humid.\\n\",\"variant\":\"4d\"}"
+      ]
+    }
+  }
+}
