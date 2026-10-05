@@ -16,6 +16,7 @@ verdicts stop changing.
 """
 
 import argparse
+import asyncio
 import json
 import sys
 import time
@@ -23,6 +24,7 @@ from datetime import datetime, timedelta
 from fnmatch import fnmatch
 
 from langsmith import Client
+from langsmith.utils import LangSmithNotFoundError
 
 from harness import config
 from harness.results import load
@@ -54,23 +56,37 @@ SEARCH = [
 ]
 
 
-def _runs(client: Client, project: str, since: datetime) -> list:
-    try:
-        return list(client.list_runs(project_name=project, start_time=since, limit=300))
-    except Exception:
-        return []  # project not created yet: nothing landed there
+SELECTS = ["ID", "NAME", "TRACE_ID", "PARENT_RUN_IDS", "METADATA", "START_TIME", "STATUS", "ERROR"]
+_project_ids: dict[tuple[str, str], str | None] = {}
+
+
+def _project_id(ws: str, client: Client, project: str) -> str | None:
+    if (ws, project) not in _project_ids:
+        try:
+            _project_ids[(ws, project)] = str(client.read_project(project_name=project).id)
+        except LangSmithNotFoundError:
+            return None  # not created yet; re-check next poll
+    return _project_ids[(ws, project)]
+
+
+async def _runs(ws: str, client: Client, project: str, since: datetime) -> list:
+    """All runs started in `project` since the case began. API errors propagate:
+    a harness bug must not look like a tracing failure."""
+    project_id = _project_id(ws, client, project)
+    if project_id is None:
+        return []
+    page = await client.runs.query(project_ids=[project_id], min_start_time=since, selects=SELECTS, page_size=500)
+    return [run async for run in page]
 
 
 def _metadata(run) -> dict:
-    return (run.extra or {}).get("metadata") or {}
+    return run.metadata or {}
 
 
-def _snapshot(clients: dict[str, Client], since: datetime) -> dict[tuple[str, str], list]:
-    return {
-        (ws, project): _runs(clients[ws], project, since)
-        for ws, project in SEARCH
-        if ws in clients
-    }
+async def _snapshot(clients: dict[str, Client], since: datetime) -> dict[tuple[str, str], list]:
+    targets = [(ws, project) for ws, project in SEARCH if ws in clients]
+    results = await asyncio.gather(*(_runs(ws, clients[ws], project, since) for ws, project in targets))
+    return dict(zip(targets, results))
 
 
 def _find_root(runs: list, harness_run: str, root_id: str | None):
@@ -85,12 +101,21 @@ def _find_root(runs: list, harness_run: str, root_id: str | None):
 
 
 def _has_ancestor(run, pattern: str, by_id: dict, root) -> bool:
-    current = by_id.get(run.parent_run_id)
-    while current is not None:
-        if (pattern == "ROOT" and current.id == root.id) or (pattern != "ROOT" and fnmatch(current.name, pattern)):
+    """`parent_run_ids` is the full ancestor chain, root first."""
+    for ancestor_id in run.parent_run_ids or []:
+        if pattern == "ROOT":
+            if ancestor_id == root.id:
+                return True
+        elif (ancestor := by_id.get(ancestor_id)) is not None and fnmatch(ancestor.name, pattern):
             return True
-        current = by_id.get(current.parent_run_id)
     return False
+
+
+def _parent_name(run, by_id: dict) -> str:
+    parents = run.parent_run_ids or []
+    if not parents:
+        return "<none: trace root>"
+    return by_id[parents[-1]].name if parents[-1] in by_id else str(parents[-1])
 
 
 def _evaluate(record: dict, snapshot: dict) -> list[dict]:
@@ -118,17 +143,19 @@ def _evaluate(record: dict, snapshot: dict) -> list[dict]:
                 in_trace = [r for r in matches if r.trace_id == root.trace_id]
                 by_id = {r.id: r for r in runs if r.trace_id == root.trace_id}
                 if not in_trace:
-                    verdict.update(status="SPLIT", detail=f"in trace {matches[0].trace_id}, root is {root.trace_id}")
+                    other = matches[0]
+                    other_root = next((r for r in runs if r.trace_id == other.trace_id and not r.parent_run_ids), None)
+                    verdict.update(status="SPLIT", detail=f"own trace rooted at '{other_root.name if other_root else '?'}'")
                 elif any(_has_ancestor(r, check["ancestor"], by_id, root) for r in in_trace):
                     verdict.update(status="PASS")
                 else:
-                    parents = {by_id[r.parent_run_id].name if r.parent_run_id in by_id else str(r.parent_run_id) for r in in_trace}
+                    parents = {_parent_name(r, by_id) for r in in_trace}
                     verdict.update(status="WRONG_PARENT", detail=f"parent: {', '.join(sorted(parents))}")
             verdicts.append(verdict)
     return verdicts
 
 
-def verify(case: str) -> dict:
+async def verify(case: str) -> dict:
     record = load(case)
     if skipped := record["notes"].get("skipped"):
         result = {"case": case, "title": record["title"], "result": "SKIPPED", "as_expected": True,
@@ -141,7 +168,7 @@ def verify(case: str) -> dict:
     since = datetime.fromisoformat(record["started_at"]) - timedelta(seconds=5)
     start, history = time.monotonic(), []
     while True:
-        verdicts = _evaluate(record, _snapshot(clients, since))
+        verdicts = _evaluate(record, await _snapshot(clients, since))
         statuses = [v["status"] for v in verdicts]
         history.append(statuses)
         elapsed = time.monotonic() - start
@@ -149,7 +176,7 @@ def verify(case: str) -> dict:
             break
         if elapsed > MIN_WAIT_S and len(history) >= 3 and history[-1] == history[-2] == history[-3]:
             break
-        time.sleep(POLL_S)
+        await asyncio.sleep(POLL_S)
 
     result = {
         "case": case,
@@ -206,6 +233,6 @@ if __name__ == "__main__":
     parser.add_argument("--matrix", action="store_true")
     args = parser.parse_args()
     for case in args.cases:
-        verify(case)
+        asyncio.run(verify(case))
     matrix()
     sys.exit(0)
