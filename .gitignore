@@ -30,3 +30,6 @@ dist/
 # Harness runtime state (service logs and PIDs)
 .logs/
 .pids/
+
+# Internal write-up, kept out of the public repo
+FINDINGS.md

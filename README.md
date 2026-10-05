@@ -6,7 +6,7 @@ grandchildren in one project) and which ones split, drop runs, or lose replicas.
 
 Every case runs a real agent, then `verify.py` reads the trace back from
 LangSmith and checks trace membership, ancestry, and project. Results are in
-[`results/matrix.md`](results/matrix.md); the write-up is in [FINDINGS.md](FINDINGS.md).
+[`results/matrix.md`](results/matrix.md).
 
 ## Layout
 
@@ -106,8 +106,7 @@ happened without a prior expectation.
 
 Latest full run (2026-10-05, `make all`). "One trace?" is the raw result;
 "As expected" compares it with the case's expectation, so a negative control
-that splits is `FAIL` / `yes`. What each result means, and how to work around
-each failure, is in [FINDINGS.md](FINDINGS.md).
+that splits is `FAIL` / `yes`. Per-run detail is in `results/verify/<case>.json`.
 
 | Case | Setup | One trace? | As expected | Non-passing runs |
 |---|---|---|---|---|
