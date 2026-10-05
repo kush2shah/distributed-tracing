@@ -153,7 +153,7 @@ def strands_tool(variant: str) -> BaseTool:
 # --- Case 7: Managed Deep Agents ----------------------------------------------------
 
 
-def mda_tool() -> BaseTool:
+def mda_tool(service: str = "mda_agent") -> BaseTool:
     """RemoteGraph(distributed_tracing=True) against an MDA app under `mda dev`."""
     import os
 
@@ -162,7 +162,7 @@ def mda_tool() -> BaseTool:
         """Ask the managed deep agent a question (it knows the weather)."""
         remote = RemoteGraph(
             "probe",
-            url=config.url("mda_agent"),
+            url=config.url(service),
             # MDA's identity is LangSmith API-key auth (identity.py).
             api_key=os.environ["LANGSMITH_API_KEY"],
             distributed_tracing=True,

@@ -26,6 +26,7 @@ ADK_OVERRIDE_PROJECT = f"{PRIMARY_PROJECT}-adk-override"
 PORTS = {
     "child_langgraph": 2024,
     "mda_agent": 2025,
+    "mda_agent_patched": 2026,  # case 7c: MDA build with a patched graph factory
     "mcp_server": 8001,
     "adk_service": 8002,
     "strands_service": 8003,

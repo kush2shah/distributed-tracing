@@ -1,0 +1,40 @@
+{
+  "case": "7c",
+  "title": "Same MDA build with its generated factory patched to apply tracing_context",
+  "harness_run": "08a64c42-b404-486b-b866-c33e5cb41acf",
+  "started_at": "2026-10-05T22:53:20.474390+00:00",
+  "root_run_id": "01a10e45-88f2-75f1-bad4-072089463a09",
+  "checks": [
+    {
+      "name": "call_mda",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mda:lookup_weather",
+      "ancestor": "call_mda",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 50\u00b0F and windy.",
+    "tools": {
+      "call_mda": [
+        [
+          {
+            "type": "text",
+            "text": "The weather in San Francisco is 50F and windy.",
+            "annotations": [],
+            "id": "msg_084a2a5c355885cd016ac42a63c77487d1810fce04f4de28e8"
+          }
+        ]
+      ]
+    }
+  }
+}

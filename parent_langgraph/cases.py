@@ -158,6 +158,8 @@ CASES: dict[str, Case] = {
     "7b": Case("Same, plus MDA tool-call middleware wrapping tracing_context(parent=)", _sync(t.mda_tool()), WEATHER,
                [Check("call_mda"), Check("mda:lookup_weather", "call_mda", expect="?"), Check("mda_lookup_weather", "call_mda", expect="?")],
                extra_metadata={"harness_mda_middleware": True}),
+    "7c": Case("Same MDA build with its generated factory patched to apply tracing_context", _sync(t.mda_tool("mda_agent_patched")), WEATHER,
+               [Check("call_mda"), Check("mda:lookup_weather", "call_mda", expect="?")]),
 }
 
 

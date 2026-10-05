@@ -1,0 +1,27 @@
+{
+  "case": "7a",
+  "title": "RemoteGraph(distributed_tracing=True) -> Managed Deep Agent (mda dev)",
+  "harness_run": "71bc2095-c1d4-4b59-b621-384963b714e8",
+  "root_run_id": "01a10e3f-26f3-79a0-9b15-c2fdea3e640d",
+  "result": "FAIL",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_mda",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "mda:lookup_weather",
+      "ancestor": "call_mda",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "own trace rooted at 'probe'",
+      "status": "SPLIT"
+    }
+  ],
+  "runner_error": null
+}

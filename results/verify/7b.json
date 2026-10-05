@@ -1,0 +1,35 @@
+{
+  "case": "7b",
+  "title": "Same, plus MDA tool-call middleware wrapping tracing_context(parent=)",
+  "harness_run": "70ec2863-1d3a-49a9-859c-dd81f6428545",
+  "root_run_id": "01a10e3f-cfee-74e1-9803-9089ce9a9eab",
+  "result": "FAIL",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_mda",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "mda:lookup_weather",
+      "ancestor": "call_mda",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "own trace rooted at 'probe'",
+      "status": "SPLIT"
+    },
+    {
+      "name": "mda_lookup_weather",
+      "ancestor": "call_mda",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "own trace rooted at 'probe'",
+      "status": "SPLIT"
+    }
+  ],
+  "runner_error": null
+}
