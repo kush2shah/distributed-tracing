@@ -1,0 +1,51 @@
+{
+  "case": "5",
+  "title": "LangGraph -> child LangGraph -> MCP",
+  "harness_run": "226e24fa-8eeb-4640-b526-8f0cc02052d5",
+  "started_at": "2026-10-05T22:21:27.947063+00:00",
+  "root_run_id": "01a10e28-5a24-7622-b422-6a720b7564c0",
+  "checks": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is 65\u00b0F and foggy, but I am currently unable to get the answer to what 2 + 3 is due to an internal error.",
+    "tools": {
+      "call_child": [
+        "The weather in San Francisco is 65\u00b0F and foggy.",
+        "ERROR RemoteException: {'error': 'BlockingError', 'message': 'An internal error occurred'}",
+        "ERROR RemoteException: {'error': 'BlockingError', 'message': 'An internal error occurred'}"
+      ]
+    }
+  }
+}

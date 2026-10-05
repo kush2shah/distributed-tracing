@@ -9,7 +9,7 @@ mkdir -p "$LOGS" "$PIDS"
 # name|directory|port|command
 SERVICES=(
   "mcp_server|mcp_server|8001|uv run python server.py"
-  "child_langgraph|child_langgraph|2024|uv run langgraph dev --port 2024 --no-browser --no-reload"
+  "child_langgraph|child_langgraph|2024|uv run langgraph dev --port 2024 --no-browser --no-reload --allow-blocking"
   "adk_service|adk_service|8002|uv run python app.py"
   "adk_service_override|adk_service|8004|env PORT=8004 ADK_PROJECT=__ADK_OVERRIDE__ uv run python app.py"
   "strands_service|strands_service|8003|uv run python app.py"
@@ -27,7 +27,10 @@ up() {
     IFS='|' read -r name dir port cmd <<<"$entry"
     if listening "$port"; then echo "  $name: port $port already in use, skipping"; continue; fi
     cmd="${cmd/__ADK_OVERRIDE__/$override}"
-    (cd "$ROOT/$dir" && nohup $cmd </dev/null >"$LOGS/$name.log" 2>&1 & echo $! >"$PIDS/$name.pid")
+    # exec makes the recorded PID the service itself, and the redirects keep the
+    # background job off the caller's stdout so `services.sh up | ...` returns.
+    (cd "$ROOT/$dir" && exec nohup $cmd) </dev/null >"$LOGS/$name.log" 2>&1 &
+    echo $! >"$PIDS/$name.pid"
     echo "  $name: starting on :$port (log .logs/$name.log)"
   done
   for entry in "${SERVICES[@]}"; do

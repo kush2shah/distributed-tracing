@@ -21,7 +21,7 @@ from langsmith.run_trees import ApiKeyAuth, WriteReplica, get_cached_client
 import tools as t
 from harness import config
 from harness.results import CaseRun, Check, now
-from harness.tracing import harness_run, rewrite_replicas
+from harness.tracing import forward_replicas, harness_run, rewrite_replicas
 
 P, R, W = config.PRIMARY_PROJECT, config.REPLICA_PROJECT, config.REPLICA_WS_PROJECT
 
@@ -37,6 +37,7 @@ class Case:
     checks: list[Check]
     replicas: str | None = None  # "project", "workspace"
     rewrite_replicas: bool = False
+    forward_replicas: bool = False
     tracing_mode: str | None = None  # must match LANGSMITH_TRACING_MODE set by the Makefile
     notes: dict = field(default_factory=dict)
 
@@ -74,6 +75,10 @@ def _three_hop(projects: list[str]) -> list[Check]:
         Check("child:mcp_call", "call_child", projects=projects),
         Check("mcp:add", "child:mcp_call", projects=projects),
     ]
+
+
+def _expect(expect: str, checks: list[Check]) -> list[Check]:
+    return [Check(c.name, c.ancestor, projects=c.projects, expect=expect) for c in checks]
 
 
 CHILD = [Check("call_child"), Check("child:lookup_weather", "call_child")]
@@ -131,16 +136,21 @@ CASES: dict[str, Case] = {
                 Check("*strands_get_weather*", "invoke_agent*", expect="?")]),
     # 5: three hops, grandchildren in MCP
     "5": Case("LangGraph -> child LangGraph -> MCP", _sync(t.child_remotegraph_tool("child")), WEATHER_AND_ADD, _three_hop([P])),
-    # 6: case 5 plus replicas
-    "6a": Case("Project replica, child uses the docs factory pattern", _sync(t.child_remotegraph_tool("child")), WEATHER_AND_ADD,
-               _three_hop([P]) + [Check(c.name, c.ancestor, projects=[R], expect="?") for c in _three_hop([R])], replicas="project"),
+    # 6: case 5 plus replicas. Each step removes one cause of loss.
+    "6a": Case("Project replica, SDK defaults (RemoteGraph + docs factory)", _sync(t.child_remotegraph_tool("child")), WEATHER_AND_ADD,
+               _three_hop([P]) + [Check("call_child", projects=[R])] + _expect("?", _three_hop([R])[1:]), replicas="project"),
     "6b": Case("Project replica, child rebuilds parent from raw baggage", _sync(t.child_remotegraph_tool("child_baggage")), WEATHER_AND_ADD,
-               _three_hop([P, R]), replicas="project"),
-    "6c": Case("Second-workspace replica, downstream services add no credentials", _sync(t.child_remotegraph_tool("child_baggage")), WEATHER_AND_ADD,
-               _three_hop([P]) + [Check("call_child", projects=[W])]
-               + [Check(c.name, c.ancestor, projects=[W], expect="?") for c in _three_hop([W])[1:]], replicas="workspace"),
-    "6d": Case("Second-workspace replica, downstream services attach their own key", _sync(t.child_remotegraph_tool("child_baggage")), WEATHER_AND_ADD,
-               _three_hop([P, W]), replicas="workspace", rewrite_replicas=True),
+               _three_hop([P]) + [Check("call_child", projects=[R])] + _expect("?", _three_hop([R])[1:]), replicas="project"),
+    "6c": Case("Project replica, replicas re-added to baggage, docs factory", _sync(t.child_remotegraph_tool("child")), WEATHER_AND_ADD,
+               _three_hop([P]) + [Check("call_child", projects=[R])] + _expect("?", _three_hop([R])[1:]),
+               replicas="project", forward_replicas=True),
+    "6d": Case("Project replica, replicas re-added to baggage, raw-baggage factory", _sync(t.child_remotegraph_tool("child_baggage")), WEATHER_AND_ADD,
+               _three_hop([P, R]), replicas="project", forward_replicas=True),
+    "6e": Case("Second-workspace replica, downstream adds no credentials", _sync(t.child_remotegraph_tool("child_baggage")), WEATHER_AND_ADD,
+               _three_hop([P]) + [Check("call_child", projects=[W])] + _expect("?", _three_hop([W])[1:]),
+               replicas="workspace", forward_replicas=True),
+    "6f": Case("Second-workspace replica, downstream attaches its own key", _sync(t.child_remotegraph_tool("child_baggage")), WEATHER_AND_ADD,
+               _three_hop([P, W]), replicas="workspace", forward_replicas=True, rewrite_replicas=True),
 }
 
 
@@ -170,6 +180,7 @@ async def run(case_id: str) -> None:
     run_id = str(uuid.uuid4())
     harness_run.set(run_id)
     rewrite_replicas.set(case.rewrite_replicas)
+    forward_replicas.set(case.forward_replicas)
     record = CaseRun(case=case_id, title=case.title, harness_run=run_id, started_at=now(), checks=case.checks)
 
     agent = create_agent(

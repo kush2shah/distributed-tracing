@@ -8,7 +8,7 @@ CASES_1 := 1a 1b 1c 1d
 CASES_2 := 2a 2b 2c 2d
 CASES_3 := 3a 3b
 CASES_4 := 4a 4b 4c 4d 4e 4f
-CASES_6 := 6a 6b 6c 6d
+CASES_6 := 6a 6b 6c 6d 6e 6f
 ALL := $(CASES_1) $(CASES_2) $(CASES_3) $(CASES_4) 5 $(CASES_6) 7
 
 .PHONY: install services-up services-down services-status all matrix clean-results \

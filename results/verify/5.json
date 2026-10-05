@@ -1,0 +1,43 @@
+{
+  "case": "5",
+  "title": "LangGraph -> child LangGraph -> MCP",
+  "harness_run": "226e24fa-8eeb-4640-b526-8f0cc02052d5",
+  "root_run_id": "01a10e28-5a24-7622-b422-6a720b7564c0",
+  "result": "PASS",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "runner_error": null
+}

@@ -13,7 +13,7 @@ from langgraph_sdk import get_client
 from opentelemetry import propagate
 
 from harness import config
-from harness.tracing import HARNESS_RUN_HEADER, harness_run, outbound_headers
+from harness.tracing import HARNESS_RUN_HEADER, harness_run, outbound_headers, replica_baggage_item
 
 # Tool outputs, saved into results/runs/<case>.json for debugging.
 NOTES: dict[str, list[str]] = {}
@@ -33,12 +33,12 @@ def child_remotegraph_tool(graph_id: str) -> BaseTool:
     @tool
     async def call_child(question: str) -> str:
         """Ask the child agent a question (it knows weather and can add numbers)."""
-        remote = RemoteGraph(
-            graph_id,
-            url=config.url("child_langgraph"),
-            distributed_tracing=True,
-            headers={HARNESS_RUN_HEADER: harness_run.get() or ""},
-        )
+        # RemoteGraph adds langsmith-trace/baggage itself and appends any `baggage`
+        # we pass, which is how the case-6 replica workaround rides along.
+        headers = outbound_headers(propagate=False)
+        if item := replica_baggage_item():
+            headers["baggage"] = item
+        remote = RemoteGraph(graph_id, url=config.url("child_langgraph"), distributed_tracing=True, headers=headers)
         try:
             out = await remote.ainvoke({"messages": [{"role": "user", "content": question}]})
             return _note("call_child", out["messages"][-1]["content"])

@@ -8,6 +8,8 @@ Two independent channels cross each boundary:
 """
 
 import contextvars
+import json
+import urllib.parse
 from collections.abc import Mapping
 from typing import Any
 
@@ -20,9 +22,15 @@ HARNESS_RUN_HEADER = "x-harness-run"
 # Case 6c: ask a downstream service to attach its own credentials to replicas it
 # inherits, since API keys and api_url never travel in `baggage`.
 REWRITE_REPLICAS_HEADER = "x-harness-rewrite-replicas"
+# Case 6 workaround: langsmith>=0.6.3 no longer writes replicas into `baggage`
+# (receivers still parse `langsmith-replicas`), so add them back on outbound calls.
+FORWARD_REPLICAS_HEADER = "x-harness-forward-replicas"
+# The fields the SDK's receiving side accepts from headers; credentials stay out.
+_HEADER_SAFE_REPLICA_FIELDS = ("project_name", "primary", "updates")
 
 harness_run: contextvars.ContextVar[str | None] = contextvars.ContextVar("harness_run", default=None)
 rewrite_replicas: contextvars.ContextVar[bool] = contextvars.ContextVar("rewrite_replicas", default=False)
+forward_replicas: contextvars.ContextVar[bool] = contextvars.ContextVar("forward_replicas", default=False)
 
 
 def marker_metadata(**extra: Any) -> dict[str, Any]:
@@ -37,9 +45,25 @@ def outbound_headers(propagate: bool = True) -> dict[str, str]:
         headers[HARNESS_RUN_HEADER] = run_id
     if rewrite_replicas.get():
         headers[REWRITE_REPLICAS_HEADER] = "1"
+    if forward_replicas.get():
+        headers[FORWARD_REPLICAS_HEADER] = "1"
     if propagate and (run_tree := get_current_run_tree()):
         headers.update(run_tree.to_headers())
+        if item := replica_baggage_item():
+            headers["baggage"] = f"{headers['baggage']},{item}" if headers.get("baggage") else item
     return headers
+
+
+def replica_baggage_item() -> str | None:
+    """`langsmith-replicas=...` for the current run, without credentials or URLs.
+
+    Only emitted when the case opts in, so the matrix shows SDK-default behavior too.
+    """
+    run_tree = get_current_run_tree()
+    if not forward_replicas.get() or run_tree is None or not run_tree.replicas:
+        return None
+    safe = [{k: r[k] for k in _HEADER_SAFE_REPLICA_FIELDS if r.get(k) is not None} for r in run_tree.replicas]
+    return f"langsmith-replicas={urllib.parse.quote(json.dumps(safe))}"
 
 
 def lower_headers(headers: Mapping[str, str]) -> dict[str, str]:
@@ -53,6 +77,8 @@ def bind_harness_run(headers: Mapping[str, str]) -> None:
         harness_run.set(run_id)
     if headers.get(REWRITE_REPLICAS_HEADER) == "1":
         rewrite_replicas.set(True)
+    if headers.get(FORWARD_REPLICAS_HEADER) == "1":
+        forward_replicas.set(True)
 
 
 def parent_from_headers(headers: Mapping[str, str]) -> RunTree | None:

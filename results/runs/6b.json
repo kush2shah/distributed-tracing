@@ -1,0 +1,55 @@
+{
+  "case": "6b",
+  "title": "Project replica, child rebuilds parent from raw baggage",
+  "harness_run": "36ef8714-9ee3-4db4-b5f2-80a93f938718",
+  "started_at": "2026-10-05T22:22:18.175477+00:00",
+  "root_run_id": "01a10e29-1e58-7091-a86c-3dea4cb7a0fb",
+  "checks": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing",
+        "distributed-tracing-replica"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing",
+        "distributed-tracing-replica"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing",
+        "distributed-tracing-replica"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "projects": [
+        "distributed-tracing",
+        "distributed-tracing-replica"
+      ],
+      "expect": "PASS"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 65\u00b0F and foggy, but I am unable to get the answer to 2 + 3 due to an internal error.",
+    "tools": {
+      "call_child": [
+        "The weather in San Francisco is currently 65\u00b0F and foggy.",
+        "ERROR RemoteException: {'error': 'BlockingError', 'message': 'An internal error occurred'}",
+        "ERROR RemoteException: {'error': 'BlockingError', 'message': 'An internal error occurred'}"
+      ]
+    }
+  }
+}

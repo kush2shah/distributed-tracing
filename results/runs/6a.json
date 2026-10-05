@@ -1,0 +1,83 @@
+{
+  "case": "6a",
+  "title": "Project replica, child uses the docs factory pattern",
+  "harness_run": "3eb3bd93-e58a-435c-a414-2cf48bb11cbc",
+  "started_at": "2026-10-05T22:21:36.845955+00:00",
+  "root_run_id": "01a10e28-7ce8-7040-abfb-32ffa24b5d4b",
+  "checks": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing-replica"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing-replica"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing-replica"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "projects": [
+        "distributed-tracing-replica"
+      ],
+      "expect": "?"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is 65\u00b0F and foggy, but I am currently unable to get the answer to what 2 + 3 is due to an internal error.",
+    "tools": {
+      "call_child": [
+        "The weather in San Francisco is 65\u00b0F and foggy.",
+        "ERROR RemoteException: {'error': 'BlockingError', 'message': 'An internal error occurred'}",
+        "ERROR RemoteException: {'error': 'BlockingError', 'message': 'An internal error occurred'}"
+      ]
+    }
+  }
+}
