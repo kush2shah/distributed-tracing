@@ -1,0 +1,12 @@
+[project]
+name = "distributed-tracing-harness"
+version = "0.1.0"
+description = "Root tooling: verify.py and the results matrix"
+requires-python = ">=3.11"
+dependencies = ["harness-common", "langsmith>=0.14.4"]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+harness-common = { path = "common", editable = true }

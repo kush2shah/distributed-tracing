@@ -1,0 +1,16 @@
+[project]
+name = "child-langgraph"
+version = "0.1.0"
+description = "Service B: LangGraph agent on Agent Server (langgraph dev) with the opt-in trace factory"
+requires-python = ">=3.11"
+dependencies = [
+  "harness-common",
+  "langchain[mcp]>=1.4.3",
+  "langchain-openai>=1.6.7",
+  "langgraph>=1.2.13",
+  "langgraph-cli[inmem]>=0.4.32",
+  "fastmcp>=4.0.11",
+]
+
+[tool.uv.sources]
+harness-common = { path = "../common", editable = true }

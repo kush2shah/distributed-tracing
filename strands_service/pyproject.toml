@@ -1,0 +1,15 @@
+[project]
+name = "strands-service"
+version = "0.1.0"
+description = "AWS Strands agent behind FastAPI; one route per LangSmith/OTel bridging variant"
+requires-python = ">=3.11"
+dependencies = [
+  "harness-common",
+  "langsmith[strands-agents]>=0.14.4",
+  "strands-agents[openai]>=1.57.2",
+  "fastapi>=0.115",
+  "uvicorn>=0.30",
+]
+
+[tool.uv.sources]
+harness-common = { path = "../common", editable = true }
