@@ -1,9 +1,9 @@
 {
-  "case": "6b",
-  "title": "Project replica, child rebuilds parent from raw baggage",
-  "harness_run": "25956df0-a4b7-4c78-a6e8-b86b5eb4c872",
-  "started_at": "2026-10-05T22:38:24.571806+00:00",
-  "root_run_id": "01a10e37-dd59-7f90-bbec-ce7fdfe2b3e8",
+  "case": "6c",
+  "title": "Project replica, SDK headers + replicas re-added to baggage, docs factory",
+  "harness_run": "37513391-4098-4071-864a-e1cacb6df804",
+  "started_at": "2026-10-05T22:44:58.077371+00:00",
+  "root_run_id": "01a10e3d-de7f-7ff3-8e7d-7f738aa2911e",
   "checks": [
     {
       "name": "call_child",

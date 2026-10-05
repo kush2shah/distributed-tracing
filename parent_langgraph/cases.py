@@ -38,6 +38,7 @@ class Case:
     replicas: str | None = None  # "project", "workspace"
     rewrite_replicas: bool = False
     forward_replicas: bool = False
+    extra_metadata: dict = field(default_factory=dict)
     tracing_mode: str | None = None  # must match LANGSMITH_TRACING_MODE set by the Makefile
     notes: dict = field(default_factory=dict)
 
@@ -141,16 +142,22 @@ CASES: dict[str, Case] = {
                _three_hop([P]) + [Check("call_child", projects=[R])] + _expect("?", _three_hop([R])[1:]), replicas="project"),
     "6b": Case("Project replica, child rebuilds parent from raw baggage", _sync(t.child_remotegraph_tool("child_baggage")), WEATHER_AND_ADD,
                _three_hop([P]) + [Check("call_child", projects=[R])] + _expect("?", _three_hop([R])[1:]), replicas="project"),
-    "6c": Case("Project replica, replicas re-added to baggage, docs factory", _sync(t.child_remotegraph_tool("child")), WEATHER_AND_ADD,
+    "6c": Case("Project replica, SDK headers + replicas re-added to baggage, docs factory", _sync(t.child_sdk_tool("child")), WEATHER_AND_ADD,
                _three_hop([P]) + [Check("call_child", projects=[R])] + _expect("?", _three_hop([R])[1:]),
                replicas="project", forward_replicas=True),
-    "6d": Case("Project replica, replicas re-added to baggage, raw-baggage factory", _sync(t.child_remotegraph_tool("child_baggage")), WEATHER_AND_ADD,
+    "6d": Case("Project replica, SDK headers + replicas re-added to baggage, raw-baggage factory", _sync(t.child_sdk_tool("child_baggage")), WEATHER_AND_ADD,
                _three_hop([P, R]), replicas="project", forward_replicas=True),
-    "6e": Case("Second-workspace replica, downstream adds no credentials", _sync(t.child_remotegraph_tool("child_baggage")), WEATHER_AND_ADD,
+    "6e": Case("Second-workspace replica, downstream adds no credentials", _sync(t.child_sdk_tool("child_baggage")), WEATHER_AND_ADD,
                _three_hop([P]) + [Check("call_child", projects=[W])] + _expect("?", _three_hop([W])[1:]),
                replicas="workspace", forward_replicas=True),
-    "6f": Case("Second-workspace replica, downstream attaches its own key", _sync(t.child_remotegraph_tool("child_baggage")), WEATHER_AND_ADD,
+    "6f": Case("Second-workspace replica, downstream attaches its own key", _sync(t.child_sdk_tool("child_baggage")), WEATHER_AND_ADD,
                _three_hop([P, W]), replicas="workspace", forward_replicas=True, rewrite_replicas=True),
+    # 7: Managed Deep Agents (MDA compiles the graph; there is no user-owned factory)
+    "7a": Case("RemoteGraph(distributed_tracing=True) -> Managed Deep Agent (mda dev)", _sync(t.mda_tool()), WEATHER,
+               [Check("call_mda"), Check("mda:lookup_weather", "call_mda", expect="?")]),
+    "7b": Case("Same, plus MDA tool-call middleware wrapping tracing_context(parent=)", _sync(t.mda_tool()), WEATHER,
+               [Check("call_mda"), Check("mda:lookup_weather", "call_mda", expect="?"), Check("mda_lookup_weather", "call_mda", expect="?")],
+               extra_metadata={"harness_mda_middleware": True}),
 }
 
 
@@ -188,7 +195,7 @@ async def run(case_id: str) -> None:
         tools=await case.tools(),
         system_prompt="You are a test agent. Always answer by calling exactly one of your tools once, then reply in one sentence.",
     )
-    metadata = {"harness_run": run_id, "case": case_id}
+    metadata = {"harness_run": run_id, "case": case_id, **case.extra_metadata}
 
     @ls.traceable(name="harness_root", run_type="chain")
     async def harness_root(prompt: str) -> str:

@@ -13,6 +13,7 @@ import urllib.parse
 from collections.abc import Mapping
 from typing import Any
 
+import langsmith as ls
 from langsmith import get_current_run_tree
 from langsmith.run_trees import ApiKeyAuth, RunTree
 
@@ -107,3 +108,13 @@ def attach_replica_credentials(replicas: list | None) -> list:
             replica["auth"] = ApiKeyAuth(api_key=config.REPLICA_API_KEY)
         rewritten.append(replica)
     return rewritten
+
+
+def continue_trace(headers: Mapping[str, str]):
+    """`tracing_context` that continues the caller's trace, replicas included.
+
+    LangChain/LangGraph runs started under a distributed RunTree parent do not
+    inherit the parent's replicas, so pass them explicitly as well.
+    """
+    parent = parent_from_headers(headers)
+    return ls.tracing_context(parent=parent, replicas=(parent.replicas or None) if parent else None)

@@ -1,15 +1,16 @@
 {
-  "case": "5",
-  "title": "LangGraph -> child LangGraph -> MCP",
-  "harness_run": "6e16a9ee-a24f-456a-8ec9-5424b0df2650",
-  "started_at": "2026-10-05T22:37:34.992478+00:00",
-  "root_run_id": "01a10e37-1bb5-77d1-b533-73182c582a70",
+  "case": "6d",
+  "title": "Project replica, SDK headers + replicas re-added to baggage, raw-baggage factory",
+  "harness_run": "e1d1722e-5ef2-4d46-8942-f528349b55e0",
+  "started_at": "2026-10-05T22:45:39.021307+00:00",
+  "root_run_id": "01a10e3e-7e68-7311-a274-61b66d1cd9c6",
   "checks": [
     {
       "name": "call_child",
       "ancestor": "ROOT",
       "projects": [
-        "distributed-tracing"
+        "distributed-tracing",
+        "distributed-tracing-replica"
       ],
       "expect": "PASS"
     },
@@ -17,7 +18,8 @@
       "name": "child:lookup_weather",
       "ancestor": "call_child",
       "projects": [
-        "distributed-tracing"
+        "distributed-tracing",
+        "distributed-tracing-replica"
       ],
       "expect": "PASS"
     },
@@ -25,7 +27,8 @@
       "name": "child:mcp_call",
       "ancestor": "call_child",
       "projects": [
-        "distributed-tracing"
+        "distributed-tracing",
+        "distributed-tracing-replica"
       ],
       "expect": "PASS"
     },
@@ -33,7 +36,8 @@
       "name": "mcp:add",
       "ancestor": "child:mcp_call",
       "projects": [
-        "distributed-tracing"
+        "distributed-tracing",
+        "distributed-tracing-replica"
       ],
       "expect": "PASS"
     }

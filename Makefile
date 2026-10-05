@@ -9,10 +9,11 @@ CASES_2 := 2a 2b 2c 2d
 CASES_3 := 3a 3b
 CASES_4 := 4a 4b 4c 4d 4e 4f
 CASES_6 := 6a 6b 6c 6d 6e 6f
-ALL := $(CASES_1) $(CASES_2) $(CASES_3) $(CASES_4) 5 $(CASES_6) 7
+CASES_7 := 7a 7b
+ALL := $(CASES_1) $(CASES_2) $(CASES_3) $(CASES_4) 5 $(CASES_6) $(CASES_7)
 
 .PHONY: install services-up services-down services-status all matrix clean-results \
-        case-1 case-2 case-3 case-4 case-6
+        case-1 case-2 case-3 case-4 case-6 case-7
 
 install:
 	@for d in . parent_langgraph child_langgraph mcp_server adk_service strands_service mda_agent; do \
@@ -31,6 +32,7 @@ case-2: $(addprefix case-,$(CASES_2))
 case-3: $(addprefix case-,$(CASES_3))
 case-4: $(addprefix case-,$(CASES_4))
 case-6: $(addprefix case-,$(CASES_6))
+case-7: $(addprefix case-,$(CASES_7))
 
 all: $(addprefix case-,$(ALL))
 

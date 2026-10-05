@@ -8,6 +8,7 @@ For every expected run (a Check in the case record) the verdict is one of:
   PASS          in the root's trace, under the expected ancestor, in the expected project
   WRONG_PARENT  in the root's trace but not under the expected ancestor
   SPLIT         exists, but in a different trace (the "starts a new trace" symptom)
+  NOT_REPLICATED in the primary project but missing from the replica project
   MISROUTED     not in the expected project, but found in another harness project
   MISSING       not found anywhere (never ran, errored, or dropped on ingestion)
 
@@ -142,7 +143,9 @@ def _evaluate(record: dict, snapshot: dict) -> list[dict]:
                     p for (w, p), rs in snapshot.items()
                     if (w, p) != (ws, project) and any(fnmatch(r.name, check["name"]) and _ours(r, record) for r in rs)
                 ]
-                if elsewhere:
+                if elsewhere == [config.PRIMARY_PROJECT] and project != config.PRIMARY_PROJECT:
+                    verdict.update(status="NOT_REPLICATED", detail="only in the primary project")
+                elif elsewhere:
                     verdict.update(status="MISROUTED", detail=f"found in {', '.join(elsewhere)}")
                 else:
                     verdict.update(status="MISSING")

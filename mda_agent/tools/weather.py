@@ -13,6 +13,8 @@ def _lookup_weather(city: str) -> str:
 @tool
 def mda_lookup_weather(city: str, config: RunnableConfig) -> str:
     """Look up the weather for a city."""
-    # The harness correlation ID arrives as an x-* request header, if the server forwards it.
-    harness_run = config.get("configurable", {}).get("x-harness-run")
+    # MDA only forwards x-mda-user-id from x-* headers, so the correlation ID comes
+    # from the caller's LangSmith metadata, which Agent Server always forwards.
+    configurable = config.get("configurable", {})
+    harness_run = (configurable.get("langsmith-metadata") or {}).get("harness_run")
     return _lookup_weather(city, langsmith_extra={"metadata": {"harness_run": harness_run, "service": "mda_agent"}})

@@ -1,8 +1,8 @@
 {
   "case": "6a",
-  "title": "Project replica, child uses the docs factory pattern",
-  "harness_run": "3eb3bd93-e58a-435c-a414-2cf48bb11cbc",
-  "root_run_id": "01a10e28-7ce8-7040-abfb-32ffa24b5d4b",
+  "title": "Project replica, SDK defaults (RemoteGraph + docs factory)",
+  "harness_run": "c08757f0-57a0-4d6c-91e4-0461cafe6281",
+  "root_run_id": "01a10e37-3835-7af1-81a9-936e41982cf7",
   "result": "FAIL",
   "as_expected": true,
   "verdicts": [
@@ -42,7 +42,7 @@
       "name": "call_child",
       "ancestor": "ROOT",
       "project": "distributed-tracing-replica",
-      "expect": "?",
+      "expect": "PASS",
       "detail": "",
       "status": "PASS"
     },

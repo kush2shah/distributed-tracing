@@ -13,7 +13,7 @@ from langgraph_sdk import get_client
 from opentelemetry import propagate
 
 from harness import config
-from harness.tracing import HARNESS_RUN_HEADER, harness_run, outbound_headers, replica_baggage_item
+from harness.tracing import HARNESS_RUN_HEADER, harness_run, outbound_headers
 
 # Tool outputs, saved into results/runs/<case>.json for debugging.
 NOTES: dict[str, list[str]] = {}
@@ -33,11 +33,9 @@ def child_remotegraph_tool(graph_id: str) -> BaseTool:
     @tool
     async def call_child(question: str) -> str:
         """Ask the child agent a question (it knows weather and can add numbers)."""
-        # RemoteGraph adds langsmith-trace/baggage itself and appends any `baggage`
-        # we pass, which is how the case-6 replica workaround rides along.
+        # RemoteGraph builds langsmith-trace/baggage per request; they replace any
+        # `baggage` passed here, so the case-6 replica workaround uses child_sdk_tool.
         headers = outbound_headers(propagate=False)
-        if item := replica_baggage_item():
-            headers["baggage"] = item
         remote = RemoteGraph(graph_id, url=config.url("child_langgraph"), distributed_tracing=True, headers=headers)
         try:
             out = await remote.ainvoke({"messages": [{"role": "user", "content": question}]})
@@ -150,3 +148,30 @@ def strands_tool(variant: str) -> BaseTool:
         return _note("call_strands", await _post_strands(route, question, headers))
 
     return call_strands
+
+
+# --- Case 7: Managed Deep Agents ----------------------------------------------------
+
+
+def mda_tool() -> BaseTool:
+    """RemoteGraph(distributed_tracing=True) against an MDA app under `mda dev`."""
+    import os
+
+    @tool
+    async def call_mda(question: str) -> str:
+        """Ask the managed deep agent a question (it knows the weather)."""
+        remote = RemoteGraph(
+            "probe",
+            url=config.url("mda_agent"),
+            # MDA's identity is LangSmith API-key auth (identity.py).
+            api_key=os.environ["LANGSMITH_API_KEY"],
+            distributed_tracing=True,
+            headers=outbound_headers(propagate=False),
+        )
+        try:
+            out = await remote.ainvoke({"messages": [{"role": "user", "content": question}]})
+            return _note("call_mda", out["messages"][-1]["content"])
+        except Exception as e:
+            return _note("call_mda", f"ERROR {type(e).__name__}: {e}")
+
+    return call_mda

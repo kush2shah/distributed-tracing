@@ -13,6 +13,7 @@ SERVICES=(
   "adk_service|adk_service|8002|uv run python app.py"
   "adk_service_override|adk_service|8004|env PORT=8004 ADK_PROJECT=__ADK_OVERRIDE__ uv run python app.py"
   "strands_service|strands_service|8003|uv run python app.py"
+  "mda_agent|mda_agent|2025|uv run mda dev --port 2025 --no-browser --no-reload"
 )
 
 adk_override_project() {

@@ -10,7 +10,7 @@ from fastmcp import FastMCP
 from fastmcp.server.dependencies import get_http_headers
 
 from harness import config
-from harness.tracing import bind_harness_run, marker_metadata, parent_from_headers
+from harness.tracing import bind_harness_run, continue_trace, marker_metadata
 
 mcp = FastMCP("harness-mcp")
 
@@ -30,7 +30,7 @@ def _trace_context():
     # `langsmith-trace`, `baggage`, and `x-*`.
     headers = get_http_headers()
     bind_harness_run(headers)
-    return ls.tracing_context(parent=parent_from_headers(headers))
+    return continue_trace(headers)
 
 
 @mcp.tool

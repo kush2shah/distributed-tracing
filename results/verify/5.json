@@ -1,8 +1,8 @@
 {
   "case": "5",
   "title": "LangGraph -> child LangGraph -> MCP",
-  "harness_run": "226e24fa-8eeb-4640-b526-8f0cc02052d5",
-  "root_run_id": "01a10e28-5a24-7622-b422-6a720b7564c0",
+  "harness_run": "6e16a9ee-a24f-456a-8ec9-5424b0df2650",
+  "root_run_id": "01a10e37-1bb5-77d1-b533-73182c582a70",
   "result": "PASS",
   "as_expected": true,
   "verdicts": [

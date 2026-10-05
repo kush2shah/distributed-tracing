@@ -19,7 +19,7 @@ from langchain_openai import ChatOpenAI
 
 from harness import config
 from harness.mcp_client import call_tool_per_run
-from harness.tracing import REWRITE_REPLICAS_HEADER, bind_harness_run, marker_metadata, parent_from_headers
+from harness.tracing import REWRITE_REPLICAS_HEADER, bind_harness_run, continue_trace, marker_metadata
 
 
 def _bind(run_config: RunnableConfig) -> None:
@@ -95,7 +95,9 @@ async def graph_baggage(config: RunnableConfig):
     """Rebuild the parent from the raw headers so `langsmith-replicas` is kept.
 
     Agent Server extracts only metadata, tags, and project from `baggage`. This
-    graph needs `baggage` allowed in langgraph.json `http.configurable_headers`.
+    graph needs `baggage` allowed in langgraph.json `http.configurable_headers`,
+    and passes the replicas explicitly because LangGraph's runs do not inherit
+    them from a distributed parent.
     """
     configurable = config.get("configurable", {})
     headers = {
@@ -103,5 +105,5 @@ async def graph_baggage(config: RunnableConfig):
         for key in ("langsmith-trace", "baggage", REWRITE_REPLICAS_HEADER)
         if configurable.get(key)
     }
-    with ls.tracing_context(parent=parent_from_headers(headers)):
+    with continue_trace(headers):
         yield agent
