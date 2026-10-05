@@ -1,0 +1,27 @@
+{
+  "case": "2c",
+  "title": "Long-lived MCPAdapter client, no trace headers (control)",
+  "harness_run": "de916445-d11d-4aa4-9200-38cd15403a85",
+  "root_run_id": "01a10e20-e5f5-7ab2-b2e2-bb17e6b08fd7",
+  "result": "FAIL",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "get_weather",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "mcp:get_weather",
+      "ancestor": "get_weather",
+      "project": "distributed-tracing",
+      "expect": "FAIL",
+      "detail": "own trace rooted at 'mcp:get_weather'",
+      "status": "SPLIT"
+    }
+  ],
+  "runner_error": null
+}

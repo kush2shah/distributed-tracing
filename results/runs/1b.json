@@ -1,0 +1,33 @@
+{
+  "case": "1b",
+  "title": "langgraph_sdk runs.wait(headers=to_headers()), fixed factory",
+  "harness_run": "24c6679c-f78f-42e0-bab4-f1d376f85f48",
+  "started_at": "2026-10-05T22:11:00.195506+00:00",
+  "root_run_id": "01a10e1e-c606-7710-9c2e-579dfa5feec4",
+  "checks": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is 65\u00b0F and foggy.",
+    "tools": {
+      "call_child": [
+        "The weather in San Francisco is 65\u00b0F and foggy."
+      ]
+    }
+  }
+}

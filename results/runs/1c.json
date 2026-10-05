@@ -1,0 +1,34 @@
+{
+  "case": "1c",
+  "title": "RemoteGraph, factory copied verbatim from docs",
+  "harness_run": "61f6cf03-1056-4429-a69f-f6bc69769514",
+  "started_at": "2026-10-05T22:11:06.300402+00:00",
+  "root_run_id": "01a10e1e-ddd4-73b1-819d-9c942a6ea4f9",
+  "checks": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "FAIL"
+    }
+  ],
+  "notes": {
+    "answer": "I am currently unable to retrieve the weather information for San Francisco due to a technical issue.",
+    "tools": {
+      "call_child": [
+        "ERROR RemoteException: {'error': 'TypeError', 'message': \"'async_generator' object is not an iterator\"}",
+        "ERROR RemoteException: {'error': 'TypeError', 'message': \"'async_generator' object is not an iterator\"}"
+      ]
+    }
+  }
+}

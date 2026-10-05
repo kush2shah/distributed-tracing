@@ -1,0 +1,27 @@
+{
+  "case": "1c",
+  "title": "RemoteGraph, factory copied verbatim from docs",
+  "harness_run": "61f6cf03-1056-4429-a69f-f6bc69769514",
+  "root_run_id": "01a10e1e-ddd4-73b1-819d-9c942a6ea4f9",
+  "result": "FAIL",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "project": "distributed-tracing",
+      "expect": "FAIL",
+      "detail": "",
+      "status": "MISSING"
+    }
+  ],
+  "runner_error": null
+}

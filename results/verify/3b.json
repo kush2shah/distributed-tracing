@@ -1,0 +1,35 @@
+{
+  "case": "3b",
+  "title": "ADK with configure_google_adk(project_name=<other>)",
+  "harness_run": "dee1d66a-f020-4f5a-b3c2-0530e200064b",
+  "root_run_id": "01a10e21-fb93-7c23-b5e6-19bd1f717d80",
+  "result": "PASS",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_adk",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "google_adk.session",
+      "ancestor": "call_adk",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "adk:get_weather",
+      "ancestor": "google_adk.session",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "runner_error": null
+}

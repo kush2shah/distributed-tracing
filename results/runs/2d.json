@@ -1,0 +1,29 @@
+{
+  "case": "2d",
+  "title": "Long-lived MCPAdapter, httpx Auth, session held open across the run",
+  "harness_run": "17be2b0a-9a87-4d3c-80ec-716a20d25659",
+  "started_at": "2026-10-05T22:14:10.530417+00:00",
+  "root_run_id": "01a10e21-ae8d-7a00-bf4a-1fa64e8f032b",
+  "checks": [
+    {
+      "name": "get_weather",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mcp:get_weather",
+      "ancestor": "get_weather",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 72F and sunny.",
+    "tools": {}
+  }
+}

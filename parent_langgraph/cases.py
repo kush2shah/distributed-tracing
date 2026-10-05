@@ -48,13 +48,20 @@ def _sync(*tools):
     return build
 
 
-def _mcp_adapter(propagate: bool):
+def _mcp_adapter(propagate: bool, hold_session: bool = False):
     async def build():
         from langchain.mcp import MCPAdapter
 
         from harness.mcp_client import long_lived_client
 
-        async with MCPAdapter(long_lived_client(propagate)) as adapter:
+        adapter = MCPAdapter(long_lived_client(propagate))
+        if hold_session:
+            # The docs' "one session per invocation" pattern: keep the adapter open so
+            # tool calls reuse one connection. Opened before any run exists; left open
+            # until the process exits.
+            await adapter.__aenter__()
+            return await adapter.list_tools()
+        async with adapter:
             return await adapter.list_tools()
 
     return build
@@ -98,6 +105,8 @@ CASES: dict[str, Case] = {
                [Check("get_weather"), Check("mcp:get_weather", "get_weather")]),
     "2c": Case("Long-lived MCPAdapter client, no trace headers (control)", _mcp_adapter(False), WEATHER,
                [Check("get_weather"), Check("mcp:get_weather", "get_weather", expect="FAIL")]),
+    "2d": Case("Long-lived MCPAdapter, httpx Auth, session held open across the run", _mcp_adapter(True, hold_session=True), WEATHER,
+               [Check("get_weather"), Check("mcp:get_weather", "get_weather", expect="?")]),
     # 3: LangGraph -> Google ADK
     "3a": Case("ADK behind TracingMiddleware", _sync(t.adk_tool("adk_service")), WEATHER,
                [Check("call_adk"), Check("google_adk.session", "call_adk"), Check("adk:get_weather", "google_adk.session")]),

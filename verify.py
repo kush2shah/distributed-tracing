@@ -89,6 +89,13 @@ async def _snapshot(clients: dict[str, Client], since: datetime) -> dict[tuple[s
     return dict(zip(targets, results))
 
 
+def _ours(run, record: dict) -> bool:
+    """Exclude runs tagged with another case's correlation ID. Untagged runs (OTel
+    spans, framework-created runs) are kept; cases run one at a time."""
+    tag = _metadata(run).get("harness_run")
+    return tag is None or tag == record["harness_run"]
+
+
 def _find_root(runs: list, harness_run: str, root_id: str | None):
     roots = [r for r in runs if r.name == "harness_root"]
     for r in roots:
@@ -125,7 +132,7 @@ def _evaluate(record: dict, snapshot: dict) -> list[dict]:
             ws = _workspace(project)
             runs = snapshot.get((ws, project), [])
             root = _find_root(runs, record["harness_run"], record.get("root_run_id"))
-            matches = [r for r in runs if fnmatch(r.name, check["name"]) and r.name != "harness_root"]
+            matches = [r for r in runs if fnmatch(r.name, check["name"]) and r.name != "harness_root" and _ours(r, record)]
             verdict = {"name": check["name"], "ancestor": check["ancestor"], "project": project,
                        "expect": check["expect"], "detail": ""}
             if root is None:
@@ -133,7 +140,7 @@ def _evaluate(record: dict, snapshot: dict) -> list[dict]:
             elif not matches:
                 elsewhere = [
                     p for (w, p), rs in snapshot.items()
-                    if (w, p) != (ws, project) and any(fnmatch(r.name, check["name"]) for r in rs)
+                    if (w, p) != (ws, project) and any(fnmatch(r.name, check["name"]) and _ours(r, record) for r in rs)
                 ]
                 if elsewhere:
                     verdict.update(status="MISROUTED", detail=f"found in {', '.join(elsewhere)}")
