@@ -1,9 +1,9 @@
 {
-  "case": "6a",
-  "title": "Project replica, SDK defaults (RemoteGraph + docs factory)",
-  "harness_run": "1791bac5-f42a-4a39-a96f-8a349601add2",
-  "started_at": "2026-10-05T22:59:35.882382+00:00",
-  "root_run_id": "01a10e4b-4362-7473-9e25-03718d46f19a",
+  "case": "6e",
+  "title": "Second-workspace replica, downstream adds no credentials",
+  "harness_run": "5994eb73-46ae-4264-b30b-d5405e45aecb",
+  "started_at": "2026-10-05T23:01:43.472729+00:00",
+  "root_run_id": null,
   "checks": [
     {
       "name": "call_child",
@@ -41,7 +41,7 @@
       "name": "call_child",
       "ancestor": "ROOT",
       "projects": [
-        "distributed-tracing-replica"
+        "distributed-tracing-ws2"
       ],
       "expect": "PASS"
     },
@@ -49,7 +49,7 @@
       "name": "child:lookup_weather",
       "ancestor": "call_child",
       "projects": [
-        "distributed-tracing-replica"
+        "distributed-tracing-ws2"
       ],
       "expect": "?"
     },
@@ -57,7 +57,7 @@
       "name": "child:mcp_call",
       "ancestor": "call_child",
       "projects": [
-        "distributed-tracing-replica"
+        "distributed-tracing-ws2"
       ],
       "expect": "?"
     },
@@ -65,18 +65,12 @@
       "name": "mcp:add",
       "ancestor": "child:mcp_call",
       "projects": [
-        "distributed-tracing-replica"
+        "distributed-tracing-ws2"
       ],
       "expect": "?"
     }
   ],
   "notes": {
-    "answer": "The weather in San Francisco is 65\u00b0F and foggy, and 2 + 3 equals 5.",
-    "tools": {
-      "call_child": [
-        "The weather in San Francisco is 65\u00b0F and foggy.",
-        "The result of 2 + 3 is 5."
-      ]
-    }
+    "skipped": "LANGSMITH_API_KEY_REPLICA is not set"
   }
 }

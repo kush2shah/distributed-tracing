@@ -1,8 +1,8 @@
 {
   "case": "7b",
   "title": "Same, plus MDA tool-call middleware wrapping tracing_context(parent=)",
-  "harness_run": "70ec2863-1d3a-49a9-859c-dd81f6428545",
-  "root_run_id": "01a10e3f-cfee-74e1-9803-9089ce9a9eab",
+  "harness_run": "7ca46881-f7da-4585-9cd2-4b44982b4b93",
+  "root_run_id": "01a10e4d-d697-70b3-a8b2-437b6d02944b",
   "result": "FAIL",
   "as_expected": true,
   "verdicts": [

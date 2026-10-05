@@ -1,8 +1,8 @@
 {
   "case": "6b",
   "title": "Project replica, child rebuilds parent from raw baggage",
-  "harness_run": "25956df0-a4b7-4c78-a6e8-b86b5eb4c872",
-  "root_run_id": "01a10e37-dd59-7f90-bbec-ce7fdfe2b3e8",
+  "harness_run": "77a2a287-8d04-44e9-9644-fbac1bcb2b46",
+  "root_run_id": "01a10e4b-dd2b-7a53-92ef-391d2c9ebb97",
   "result": "FAIL",
   "as_expected": true,
   "verdicts": [
@@ -51,24 +51,24 @@
       "ancestor": "call_child",
       "project": "distributed-tracing-replica",
       "expect": "?",
-      "detail": "found in distributed-tracing",
-      "status": "MISROUTED"
+      "detail": "only in the primary project",
+      "status": "NOT_REPLICATED"
     },
     {
       "name": "child:mcp_call",
       "ancestor": "call_child",
       "project": "distributed-tracing-replica",
       "expect": "?",
-      "detail": "found in distributed-tracing",
-      "status": "MISROUTED"
+      "detail": "only in the primary project",
+      "status": "NOT_REPLICATED"
     },
     {
       "name": "mcp:add",
       "ancestor": "child:mcp_call",
       "project": "distributed-tracing-replica",
       "expect": "?",
-      "detail": "found in distributed-tracing",
-      "status": "MISROUTED"
+      "detail": "only in the primary project",
+      "status": "NOT_REPLICATED"
     }
   ],
   "runner_error": null

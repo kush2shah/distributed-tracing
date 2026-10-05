@@ -1,8 +1,8 @@
 {
   "case": "2a",
   "title": "MCP client opened per tool call with to_headers()",
-  "harness_run": "5dc3a446-0ee7-4464-8cb8-2341f6b2cb84",
-  "root_run_id": "01a10e20-c4f4-7290-8813-63799b152d14",
+  "harness_run": "ff8b11f4-1d19-419f-bf14-9c72bc84a145",
+  "root_run_id": "01a10e47-2f39-7020-94e0-a3cd67db5b7a",
   "result": "PASS",
   "as_expected": true,
   "verdicts": [

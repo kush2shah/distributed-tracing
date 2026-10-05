@@ -1,9 +1,9 @@
 {
   "case": "7a",
   "title": "RemoteGraph(distributed_tracing=True) -> Managed Deep Agent (mda dev)",
-  "harness_run": "71bc2095-c1d4-4b59-b621-384963b714e8",
-  "started_at": "2026-10-05T22:46:22.161872+00:00",
-  "root_run_id": "01a10e3f-26f3-79a0-9b15-c2fdea3e640d",
+  "harness_run": "09515ee3-7ae6-4a20-a5bc-d61deae6be51",
+  "started_at": "2026-10-05T23:01:45.039309+00:00",
+  "root_run_id": "01a10e4d-3be7-7c02-b104-0f96e5c0d207",
   "checks": [
     {
       "name": "call_mda",
@@ -31,7 +31,7 @@
             "type": "text",
             "text": "The weather in San Francisco is 50\u00b0F and windy.",
             "annotations": [],
-            "id": "msg_07ddb65135b492de016ac428c2438887d19aac14b890d54b9a"
+            "id": "msg_000585c920d81006016ac42c5c50fc87d1a56ab660b0ab5965"
           }
         ]
       ]

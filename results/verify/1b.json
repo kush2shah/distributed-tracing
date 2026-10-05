@@ -1,8 +1,8 @@
 {
   "case": "1b",
   "title": "langgraph_sdk runs.wait(headers=to_headers()), fixed factory",
-  "harness_run": "24c6679c-f78f-42e0-bab4-f1d376f85f48",
-  "root_run_id": "01a10e1e-c606-7710-9c2e-579dfa5feec4",
+  "harness_run": "2cf909c0-3243-411c-a2f3-477738a370da",
+  "root_run_id": "01a10e45-e5e5-77d2-9d5c-9951e363342a",
   "result": "PASS",
   "as_expected": true,
   "verdicts": [

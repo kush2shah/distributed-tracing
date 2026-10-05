@@ -1,0 +1,9 @@
+{
+  "case": "6f",
+  "title": "Second-workspace replica, downstream attaches its own key",
+  "result": "SKIPPED",
+  "as_expected": true,
+  "verdicts": [],
+  "runner_error": null,
+  "skipped": "LANGSMITH_API_KEY_REPLICA is not set"
+}

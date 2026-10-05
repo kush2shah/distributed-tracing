@@ -1,8 +1,8 @@
 {
   "case": "2c",
   "title": "Long-lived MCPAdapter client, no trace headers (control)",
-  "harness_run": "de916445-d11d-4aa4-9200-38cd15403a85",
-  "root_run_id": "01a10e20-e5f5-7ab2-b2e2-bb17e6b08fd7",
+  "harness_run": "77be2bd9-e0bc-447d-9ce6-2bf94d1b8f66",
+  "root_run_id": "01a10e47-4f13-7ba1-b8f7-7c69f576c0f4",
   "result": "FAIL",
   "as_expected": true,
   "verdicts": [

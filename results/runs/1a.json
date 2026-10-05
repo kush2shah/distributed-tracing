@@ -1,9 +1,9 @@
 {
   "case": "1a",
   "title": "RemoteGraph(distributed_tracing=True), fixed factory",
-  "harness_run": "a7749317-a95b-47f5-ac08-bc9f57bdacb6",
-  "started_at": "2026-10-05T22:08:44.366681+00:00",
-  "root_run_id": "01a10e1c-b3ea-7171-b0c1-52375c7980b0",
+  "harness_run": "961c841e-a69d-41ed-b083-4ac3214c88f0",
+  "started_at": "2026-10-05T22:53:38.376629+00:00",
+  "root_run_id": "01a10e45-cee2-7c33-a612-7bdd2c9823e4",
   "checks": [
     {
       "name": "call_child",

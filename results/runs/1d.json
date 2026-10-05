@@ -1,9 +1,9 @@
 {
   "case": "1d",
   "title": "RemoteGraph, server exports plain graph (no factory)",
-  "harness_run": "55cebce7-1d64-4a4c-8003-07ae7d3b191c",
-  "started_at": "2026-10-05T22:11:43.133886+00:00",
-  "root_run_id": "01a10e1f-6db7-7961-85ae-da63e63b3563",
+  "harness_run": "8ebc43ab-8964-4333-a95f-98c8f5c2e6c1",
+  "started_at": "2026-10-05T22:54:31.157331+00:00",
+  "root_run_id": "01a10e46-9d0d-7541-a608-d4713f9e63ae",
   "checks": [
     {
       "name": "call_child",

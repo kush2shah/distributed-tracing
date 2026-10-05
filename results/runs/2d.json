@@ -1,9 +1,9 @@
 {
   "case": "2d",
   "title": "Long-lived MCPAdapter, httpx Auth, session held open across the run",
-  "harness_run": "17be2b0a-9a87-4d3c-80ec-716a20d25659",
-  "started_at": "2026-10-05T22:14:10.530417+00:00",
-  "root_run_id": "01a10e21-ae8d-7a00-bf4a-1fa64e8f032b",
+  "harness_run": "c28dc237-f006-4b6c-887c-a57071e96b5f",
+  "started_at": "2026-10-05T22:55:54.711952+00:00",
+  "root_run_id": "01a10e47-e47a-7262-aebf-02b192e0cdab",
   "checks": [
     {
       "name": "get_weather",

@@ -1,0 +1,9 @@
+{
+  "case": "6e",
+  "title": "Second-workspace replica, downstream adds no credentials",
+  "result": "SKIPPED",
+  "as_expected": true,
+  "verdicts": [],
+  "runner_error": null,
+  "skipped": "LANGSMITH_API_KEY_REPLICA is not set"
+}

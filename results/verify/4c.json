@@ -1,8 +1,8 @@
 {
   "case": "4c",
   "title": "Parent tracing_mode=otel (all-OTel both sides), W3C traceparent",
-  "harness_run": "52ef2227-7d71-40d6-ad31-dc25729ddb06",
-  "root_run_id": "01a10e23-fe96-71b3-8dd9-bfd0eeb7fde1",
+  "harness_run": "62b62816-3709-42d8-a05e-5eef59011817",
+  "root_run_id": "01a10e49-468b-7342-ba17-581ea6202342",
   "result": "FAIL",
   "as_expected": true,
   "verdicts": [

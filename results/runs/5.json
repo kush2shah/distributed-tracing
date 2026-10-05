@@ -1,9 +1,9 @@
 {
   "case": "5",
   "title": "LangGraph -> child LangGraph -> MCP",
-  "harness_run": "6e16a9ee-a24f-456a-8ec9-5424b0df2650",
-  "started_at": "2026-10-05T22:37:34.992478+00:00",
-  "root_run_id": "01a10e37-1bb5-77d1-b533-73182c582a70",
+  "harness_run": "63e072c8-2722-4987-acea-e3fd3b81e96c",
+  "started_at": "2026-10-05T22:59:25.150746+00:00",
+  "root_run_id": "01a10e4b-1977-7071-b8fb-b7d3407aaff1",
   "checks": [
     {
       "name": "call_child",

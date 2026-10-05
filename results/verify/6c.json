@@ -1,8 +1,8 @@
 {
   "case": "6c",
   "title": "Project replica, SDK headers + replicas re-added to baggage, docs factory",
-  "harness_run": "37513391-4098-4071-864a-e1cacb6df804",
-  "root_run_id": "01a10e3d-de7f-7ff3-8e7d-7f738aa2911e",
+  "harness_run": "5c35ad9f-97be-4964-ad1a-cf4fdb86bdb6",
+  "root_run_id": "01a10e4c-7813-7a13-80b1-c53169843af9",
   "result": "FAIL",
   "as_expected": true,
   "verdicts": [

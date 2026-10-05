@@ -1,8 +1,8 @@
 {
   "case": "2b",
   "title": "Long-lived MCPAdapter client, httpx Auth adds headers per request",
-  "harness_run": "2b9c86ad-07d7-4eb8-81b9-17f4550a81e5",
-  "root_run_id": "01a10e20-d6bc-7002-a82f-ff21c8f9abe7",
+  "harness_run": "4cb9665b-07b2-4d3c-a8bf-c6c88b1c3471",
+  "root_run_id": "01a10e47-3f86-7cc1-9081-ef536c4e740f",
   "result": "PASS",
   "as_expected": true,
   "verdicts": [

@@ -1,8 +1,8 @@
 {
   "case": "3a",
   "title": "ADK behind TracingMiddleware",
-  "harness_run": "31e819cc-e2de-4272-805d-db8e408f8944",
-  "root_run_id": "01a10e21-e116-7a10-8e58-d2ee9e882eb4",
+  "harness_run": "c6f49c08-a5d2-43b5-8558-73adabc99066",
+  "root_run_id": "01a10e47-f208-77c3-8215-822af9014859",
   "result": "PASS",
   "as_expected": true,
   "verdicts": [

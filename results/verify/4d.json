@@ -1,8 +1,8 @@
 {
   "case": "4d",
   "title": "langsmith.* attributes on one wrapper span (docs)",
-  "harness_run": "0a6348c1-c695-4cae-b397-c0a2619dfe80",
-  "root_run_id": "01a10e24-8da7-7240-84b7-35eb8f771e9c",
+  "harness_run": "f2869c8b-58ff-40af-9993-0446eb16b111",
+  "root_run_id": "01a10e49-e2c0-7862-8a27-6a853f7637d0",
   "result": "FAIL",
   "as_expected": true,
   "verdicts": [

@@ -1,8 +1,8 @@
 {
   "case": "4a",
   "title": "LangSmith headers + tracing_context(parent=) around Strands",
-  "harness_run": "802677a5-defd-4720-91b8-9590960f0f80",
-  "root_run_id": "01a10e22-bde0-74f1-b2cc-838c490d7171",
+  "harness_run": "3fa4837c-88d9-460c-97ce-c65e535bc352",
+  "root_run_id": "01a10e48-2494-7bf2-ae4b-a95ff47b6920",
   "result": "FAIL",
   "as_expected": true,
   "verdicts": [

@@ -1,9 +1,9 @@
 {
   "case": "3b",
   "title": "ADK with configure_google_adk(project_name=<other>)",
-  "harness_run": "dee1d66a-f020-4f5a-b3c2-0530e200064b",
-  "started_at": "2026-10-05T22:14:30.523974+00:00",
-  "root_run_id": "01a10e21-fb93-7c23-b5e6-19bd1f717d80",
+  "harness_run": "d8bb7063-f024-4a12-ab87-c11e144d38e4",
+  "started_at": "2026-10-05T22:56:05.533453+00:00",
+  "root_run_id": "01a10e48-0db5-7ea2-b5dc-e2a277550560",
   "checks": [
     {
       "name": "call_adk",

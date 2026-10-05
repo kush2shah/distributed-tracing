@@ -1,9 +1,9 @@
 {
   "case": "6b",
   "title": "Project replica, child rebuilds parent from raw baggage",
-  "harness_run": "25956df0-a4b7-4c78-a6e8-b86b5eb4c872",
-  "started_at": "2026-10-05T22:38:24.571806+00:00",
-  "root_run_id": "01a10e37-dd59-7f90-bbec-ce7fdfe2b3e8",
+  "harness_run": "77a2a287-8d04-44e9-9644-fbac1bcb2b46",
+  "started_at": "2026-10-05T23:00:15.237087+00:00",
+  "root_run_id": "01a10e4b-dd2b-7a53-92ef-391d2c9ebb97",
   "checks": [
     {
       "name": "call_child",
@@ -71,10 +71,10 @@
     }
   ],
   "notes": {
-    "answer": "The weather in San Francisco is 65\u00b0F and foggy, and 2 + 3 equals 5.",
+    "answer": "The weather in San Francisco is currently 65\u00b0F and foggy, and 2 + 3 equals 5.",
     "tools": {
       "call_child": [
-        "The weather in San Francisco is 65\u00b0F and foggy.",
+        "The weather in San Francisco is currently 65\u00b0F and foggy.",
         "The result of 2 + 3 is 5."
       ]
     }

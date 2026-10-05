@@ -1,9 +1,9 @@
 {
   "case": "4b",
   "title": "Parent tracing_mode=hybrid, W3C traceparent",
-  "harness_run": "6615d1a5-3023-4869-ad05-f497231cecdb",
-  "started_at": "2026-10-05T22:16:03.357784+00:00",
-  "root_run_id": "01a10e23-6636-76e2-b918-e1cd4bc33e88",
+  "harness_run": "41555230-2a16-4e8c-bdae-cfecc201b6a8",
+  "started_at": "2026-10-05T22:56:48.621217+00:00",
+  "root_run_id": "01a10e48-b605-7eb0-912b-9f0f87efc484",
   "checks": [
     {
       "name": "call_strands",
@@ -50,7 +50,7 @@
     "answer": "The weather in San Francisco is currently 80\u00b0F and humid.",
     "tools": {
       "traceparent": [
-        "00-01a10e23663676e2b918e1cd4bc33e88-01a10e23697477a3-01"
+        "00-01a10e48b6057eb0912b9f0f87efc484-01a10e48b8dd75f3-01"
       ],
       "call_strands": [
         "{\"output\":\"The weather in San Francisco is currently 80\u00b0F and humid.\\n\",\"variant\":\"otel\"}"

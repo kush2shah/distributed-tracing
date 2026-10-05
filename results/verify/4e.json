@@ -1,8 +1,8 @@
 {
   "case": "4e",
   "title": "langsmith.* attributes stamped on every Strands span",
-  "harness_run": "9f41fef7-3db7-4d3e-8171-bbafb1204ec9",
-  "root_run_id": "01a10e25-1c55-79c1-95b1-f508963a2cc8",
+  "harness_run": "90b34e30-a5f0-4794-b166-3c9bab3feb0e",
+  "root_run_id": "01a10e4a-74e8-7423-8db0-109378aa482f",
   "result": "PASS",
   "as_expected": true,
   "verdicts": [
