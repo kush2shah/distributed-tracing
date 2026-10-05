@@ -140,10 +140,10 @@ def _evaluate(record: dict, snapshot: dict) -> list[dict]:
                 verdict.update(status="MISSING", detail="harness_root not found in this project")
             elif not matches:
                 elsewhere = [
-                    p for (w, p), rs in snapshot.items()
+                    f"{p} ({w} workspace)" for (w, p), rs in snapshot.items()
                     if (w, p) != (ws, project) and any(fnmatch(r.name, check["name"]) and _ours(r, record) for r in rs)
                 ]
-                if elsewhere == [config.PRIMARY_PROJECT] and project != config.PRIMARY_PROJECT:
+                if elsewhere == [f"{config.PRIMARY_PROJECT} (primary workspace)"] and project != config.PRIMARY_PROJECT:
                     verdict.update(status="NOT_REPLICATED", detail="only in the primary project")
                 elif elsewhere:
                     verdict.update(status="MISROUTED", detail=f"found in {', '.join(elsewhere)}")

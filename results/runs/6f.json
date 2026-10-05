@@ -1,9 +1,9 @@
 {
   "case": "6f",
   "title": "Second-workspace replica, downstream attaches its own key",
-  "harness_run": "11a372f9-c753-4aaa-b368-05e4ce4d5463",
-  "started_at": "2026-10-05T23:01:44.237510+00:00",
-  "root_run_id": null,
+  "harness_run": "24079152-c12a-42f0-ad52-4e458e140a23",
+  "started_at": "2026-10-05T23:36:17.801113+00:00",
+  "root_run_id": "01a10e6c-dca4-7ca0-b64f-f2aaf84260cd",
   "checks": [
     {
       "name": "call_child",
@@ -43,6 +43,12 @@
     }
   ],
   "notes": {
-    "skipped": "LANGSMITH_API_KEY_REPLICA is not set"
+    "answer": "The weather in San Francisco is 65\u00b0F and foggy, and 2 + 3 equals 5.",
+    "tools": {
+      "call_child": [
+        "The weather in San Francisco is 65\u00b0F and foggy.",
+        "The result of 2 + 3 is 5."
+      ]
+    }
   }
 }

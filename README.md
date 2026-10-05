@@ -132,8 +132,8 @@ each failure, is in [FINDINGS.md](FINDINGS.md).
 | 6b | Project replica, child rebuilds parent from raw baggage | **FAIL** | yes | child:lookup_weather @ distributed-tracing-replica: NOT_REPLICATED; child:mcp_call @ distributed-tracing-replica: NOT_REPLICATED; mcp:add @ distributed-tracing-replica: NOT_REPLICATED |
 | 6c | Project replica, SDK headers + replicas re-added to baggage, docs factory | **FAIL** | yes | child:lookup_weather @ distributed-tracing-replica: NOT_REPLICATED; child:mcp_call @ distributed-tracing-replica: NOT_REPLICATED; mcp:add @ distributed-tracing-replica: NOT_REPLICATED |
 | 6d | Project replica, SDK headers + replicas re-added to baggage, raw-baggage factory | **PASS** | yes | - |
-| 6e | Second-workspace replica, downstream adds no credentials | **SKIPPED** | yes | LANGSMITH_API_KEY_REPLICA is not set |
-| 6f | Second-workspace replica, downstream attaches its own key | **SKIPPED** | yes | LANGSMITH_API_KEY_REPLICA is not set |
+| 6e | Second-workspace replica, downstream adds no credentials | **FAIL** | yes | child:lookup_weather @ distributed-tracing-ws2: MISROUTED; child:mcp_call @ distributed-tracing-ws2: MISROUTED; mcp:add @ distributed-tracing-ws2: MISROUTED |
+| 6f | Second-workspace replica, downstream attaches its own key | **PASS** | yes | - |
 | 7a | RemoteGraph(distributed_tracing=True) -> Managed Deep Agent (mda dev) | **FAIL** | yes | mda:lookup_weather @ distributed-tracing: SPLIT |
 | 7b | Same, plus MDA tool-call middleware wrapping tracing_context(parent=) | **FAIL** | yes | mda:lookup_weather @ distributed-tracing: SPLIT; mda_lookup_weather @ distributed-tracing: SPLIT |
 | 7c | Same MDA build with its generated factory patched to apply tracing_context | **PASS** | yes | - |
