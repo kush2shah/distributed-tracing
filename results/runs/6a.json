@@ -1,0 +1,82 @@
+{
+  "case": "6a",
+  "title": "Project replica, SDK defaults (RemoteGraph + docs factory)",
+  "harness_run": "1791bac5-f42a-4a39-a96f-8a349601add2",
+  "started_at": "2026-10-05T22:59:35.882382+00:00",
+  "root_run_id": "01a10e4b-4362-7473-9e25-03718d46f19a",
+  "checks": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing-replica"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing-replica"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing-replica"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "projects": [
+        "distributed-tracing-replica"
+      ],
+      "expect": "?"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is 65\u00b0F and foggy, and 2 + 3 equals 5.",
+    "tools": {
+      "call_child": [
+        "The weather in San Francisco is 65\u00b0F and foggy.",
+        "The result of 2 + 3 is 5."
+      ]
+    }
+  }
+}

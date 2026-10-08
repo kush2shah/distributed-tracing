@@ -1,0 +1,54 @@
+{
+  "case": "6f",
+  "title": "Second-workspace replica, downstream attaches its own key",
+  "harness_run": "24079152-c12a-42f0-ad52-4e458e140a23",
+  "started_at": "2026-10-05T23:36:17.801113+00:00",
+  "root_run_id": "01a10e6c-dca4-7ca0-b64f-f2aaf84260cd",
+  "checks": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing",
+        "distributed-tracing-ws2"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing",
+        "distributed-tracing-ws2"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing",
+        "distributed-tracing-ws2"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "projects": [
+        "distributed-tracing",
+        "distributed-tracing-ws2"
+      ],
+      "expect": "PASS"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is 65\u00b0F and foggy, and 2 + 3 equals 5.",
+    "tools": {
+      "call_child": [
+        "The weather in San Francisco is 65\u00b0F and foggy.",
+        "The result of 2 + 3 is 5."
+      ]
+    }
+  }
+}

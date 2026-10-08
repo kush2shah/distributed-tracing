@@ -1,0 +1,27 @@
+{
+  "case": "7c",
+  "title": "Same MDA build with its generated factory patched to apply tracing_context",
+  "harness_run": "cbe0f441-f341-449c-a190-ee8695d01fbb",
+  "root_run_id": "01a10e4e-7766-7a61-af67-939fe6b84749",
+  "result": "PASS",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_mda",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "mda:lookup_weather",
+      "ancestor": "call_mda",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "runner_error": null
+}

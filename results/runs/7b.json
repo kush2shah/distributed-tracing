@@ -1,0 +1,48 @@
+{
+  "case": "7b",
+  "title": "Same, plus MDA tool-call middleware wrapping tracing_context(parent=)",
+  "harness_run": "7ca46881-f7da-4585-9cd2-4b44982b4b93",
+  "started_at": "2026-10-05T23:02:24.638393+00:00",
+  "root_run_id": "01a10e4d-d697-70b3-a8b2-437b6d02944b",
+  "checks": [
+    {
+      "name": "call_mda",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mda:lookup_weather",
+      "ancestor": "call_mda",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "mda_lookup_weather",
+      "ancestor": "call_mda",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 50\u00b0F and windy.",
+    "tools": {
+      "call_mda": [
+        [
+          {
+            "type": "text",
+            "text": "The weather in San Francisco is currently 50\u00b0F and windy.",
+            "annotations": [],
+            "id": "msg_03bbe2463fffceaf016ac42c8391f487d1b870c9167d967eed"
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "case": "1d",
+  "title": "RemoteGraph, server exports plain graph (no factory)",
+  "harness_run": "8ebc43ab-8964-4333-a95f-98c8f5c2e6c1",
+  "started_at": "2026-10-05T22:54:31.157331+00:00",
+  "root_run_id": "01a10e46-9d0d-7541-a608-d4713f9e63ae",
+  "checks": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "FAIL"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is 65\u00b0F and foggy.",
+    "tools": {
+      "call_child": [
+        "The weather in San Francisco is 65\u00b0F and foggy."
+      ]
+    }
+  }
+}

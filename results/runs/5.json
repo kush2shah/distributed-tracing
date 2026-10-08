@@ -1,0 +1,50 @@
+{
+  "case": "5",
+  "title": "LangGraph -> child LangGraph -> MCP",
+  "harness_run": "63e072c8-2722-4987-acea-e3fd3b81e96c",
+  "started_at": "2026-10-05T22:59:25.150746+00:00",
+  "root_run_id": "01a10e4b-1977-7071-b8fb-b7d3407aaff1",
+  "checks": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is 65\u00b0F and foggy, and 2 + 3 equals 5.",
+    "tools": {
+      "call_child": [
+        "The weather in San Francisco is 65\u00b0F and foggy.",
+        "The result of 2 + 3 is 5."
+      ]
+    }
+  }
+}

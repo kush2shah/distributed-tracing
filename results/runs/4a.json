@@ -1,0 +1,49 @@
+{
+  "case": "4a",
+  "title": "LangSmith headers + tracing_context(parent=) around Strands",
+  "harness_run": "3fa4837c-88d9-460c-97ce-c65e535bc352",
+  "started_at": "2026-10-05T22:56:11.387709+00:00",
+  "root_run_id": "01a10e48-2494-7bf2-ae4b-a95ff47b6920",
+  "checks": [
+    {
+      "name": "call_strands",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "strands:handle",
+      "ancestor": "call_strands",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "invoke_agent*",
+      "ancestor": "strands:handle",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "*strands_get_weather*",
+      "ancestor": "invoke_agent*",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 80\u00b0F and humid.",
+    "tools": {
+      "call_strands": [
+        "{\"output\":\"The weather in San Francisco is currently 80\u00b0F and humid.\\n\",\"variant\":\"4a\"}"
+      ]
+    }
+  }
+}

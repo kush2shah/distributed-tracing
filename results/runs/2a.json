@@ -1,0 +1,33 @@
+{
+  "case": "2a",
+  "title": "MCP client opened per tool call with to_headers()",
+  "harness_run": "ff8b11f4-1d19-419f-bf14-9c72bc84a145",
+  "started_at": "2026-10-05T22:55:08.576663+00:00",
+  "root_run_id": "01a10e47-2f39-7020-94e0-a3cd67db5b7a",
+  "checks": [
+    {
+      "name": "call_mcp_weather",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mcp:get_weather",
+      "ancestor": "call_mcp_weather",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 72\u00b0F and sunny.",
+    "tools": {
+      "call_mcp_weather": [
+        "It is 72F and sunny in San Francisco."
+      ]
+    }
+  }
+}

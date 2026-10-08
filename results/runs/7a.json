@@ -1,0 +1,40 @@
+{
+  "case": "7a",
+  "title": "RemoteGraph(distributed_tracing=True) -> Managed Deep Agent (mda dev)",
+  "harness_run": "09515ee3-7ae6-4a20-a5bc-d61deae6be51",
+  "started_at": "2026-10-05T23:01:45.039309+00:00",
+  "root_run_id": "01a10e4d-3be7-7c02-b104-0f96e5c0d207",
+  "checks": [
+    {
+      "name": "call_mda",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mda:lookup_weather",
+      "ancestor": "call_mda",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 50\u00b0F and windy.",
+    "tools": {
+      "call_mda": [
+        [
+          {
+            "type": "text",
+            "text": "The weather in San Francisco is 50\u00b0F and windy.",
+            "annotations": [],
+            "id": "msg_000585c920d81006016ac42c5c50fc87d1a56ab660b0ab5965"
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "case": "6e",
+  "title": "Second-workspace replica, downstream adds no credentials",
+  "harness_run": "4643631a-43a4-4f04-89ce-55af1002fa1c",
+  "root_run_id": "01a10e6c-3fef-7e30-969e-c6dd4091674b",
+  "result": "FAIL",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing-ws2",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "project": "distributed-tracing-ws2",
+      "expect": "?",
+      "detail": "found in distributed-tracing (primary workspace), distributed-tracing-ws2 (primary workspace)",
+      "status": "MISROUTED"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "project": "distributed-tracing-ws2",
+      "expect": "?",
+      "detail": "found in distributed-tracing (primary workspace), distributed-tracing-ws2 (primary workspace)",
+      "status": "MISROUTED"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "project": "distributed-tracing-ws2",
+      "expect": "?",
+      "detail": "found in distributed-tracing (primary workspace), distributed-tracing-ws2 (primary workspace)",
+      "status": "MISROUTED"
+    }
+  ],
+  "runner_error": null
+}

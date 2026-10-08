@@ -1,0 +1,51 @@
+{
+  "case": "4b",
+  "title": "Parent tracing_mode=hybrid, W3C traceparent",
+  "harness_run": "41555230-2a16-4e8c-bdae-cfecc201b6a8",
+  "root_run_id": "01a10e48-b605-7eb0-912b-9f0f87efc484",
+  "result": "FAIL",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_strands",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "send_to_strands",
+      "ancestor": "call_strands",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "strands:handle",
+      "ancestor": "send_to_strands",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "MISSING"
+    },
+    {
+      "name": "invoke_agent*",
+      "ancestor": "strands:handle",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "MISSING"
+    },
+    {
+      "name": "*strands_get_weather*",
+      "ancestor": "invoke_agent*",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "MISSING"
+    }
+  ],
+  "runner_error": null
+}

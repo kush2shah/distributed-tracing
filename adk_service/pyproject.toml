@@ -1,0 +1,16 @@
+[project]
+name = "adk-service"
+version = "0.1.0"
+description = "Google ADK agent behind FastAPI with LangSmith TracingMiddleware"
+requires-python = ">=3.11"
+dependencies = [
+  "harness-common",
+  "langsmith[google-adk]>=0.14.4",
+  "google-adk>=2.11.0",
+  "litellm>=1.0",
+  "fastapi>=0.115",
+  "uvicorn>=0.30",
+]
+
+[tool.uv.sources]
+harness-common = { path = "../common", editable = true }

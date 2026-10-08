@@ -1,0 +1,29 @@
+{
+  "case": "2b",
+  "title": "Long-lived MCPAdapter client, httpx Auth adds headers per request",
+  "harness_run": "4cb9665b-07b2-4d3c-a8bf-c6c88b1c3471",
+  "started_at": "2026-10-05T22:55:12.460906+00:00",
+  "root_run_id": "01a10e47-3f86-7cc1-9081-ef536c4e740f",
+  "checks": [
+    {
+      "name": "get_weather",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mcp:get_weather",
+      "ancestor": "get_weather",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 72\u00b0F and sunny.",
+    "tools": {}
+  }
+}

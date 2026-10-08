@@ -1,0 +1,29 @@
+{
+  "case": "2c",
+  "title": "Long-lived MCPAdapter client, no trace headers (control)",
+  "harness_run": "77be2bd9-e0bc-447d-9ce6-2bf94d1b8f66",
+  "started_at": "2026-10-05T22:55:16.463344+00:00",
+  "root_run_id": "01a10e47-4f13-7ba1-b8f7-7c69f576c0f4",
+  "checks": [
+    {
+      "name": "get_weather",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "mcp:get_weather",
+      "ancestor": "get_weather",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "FAIL"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 72F and sunny.",
+    "tools": {}
+  }
+}

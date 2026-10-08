@@ -1,0 +1,75 @@
+{
+  "case": "6b",
+  "title": "Project replica, child rebuilds parent from raw baggage",
+  "harness_run": "77a2a287-8d04-44e9-9644-fbac1bcb2b46",
+  "root_run_id": "01a10e4b-dd2b-7a53-92ef-391d2c9ebb97",
+  "result": "FAIL",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing-replica",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "project": "distributed-tracing-replica",
+      "expect": "?",
+      "detail": "only in the primary project",
+      "status": "NOT_REPLICATED"
+    },
+    {
+      "name": "child:mcp_call",
+      "ancestor": "call_child",
+      "project": "distributed-tracing-replica",
+      "expect": "?",
+      "detail": "only in the primary project",
+      "status": "NOT_REPLICATED"
+    },
+    {
+      "name": "mcp:add",
+      "ancestor": "child:mcp_call",
+      "project": "distributed-tracing-replica",
+      "expect": "?",
+      "detail": "only in the primary project",
+      "status": "NOT_REPLICATED"
+    }
+  ],
+  "runner_error": null
+}

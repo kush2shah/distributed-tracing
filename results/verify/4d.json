@@ -1,0 +1,43 @@
+{
+  "case": "4d",
+  "title": "langsmith.* attributes on one wrapper span (docs)",
+  "harness_run": "f2869c8b-58ff-40af-9993-0446eb16b111",
+  "root_run_id": "01a10e49-e2c0-7862-8a27-6a853f7637d0",
+  "result": "FAIL",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_strands",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "strands:handle",
+      "ancestor": "call_strands",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "invoke_agent*",
+      "ancestor": "strands:handle",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "MISSING"
+    },
+    {
+      "name": "*strands_get_weather*",
+      "ancestor": "invoke_agent*",
+      "project": "distributed-tracing",
+      "expect": "?",
+      "detail": "",
+      "status": "MISSING"
+    }
+  ],
+  "runner_error": null
+}

@@ -1,0 +1,41 @@
+{
+  "case": "3a",
+  "title": "ADK behind TracingMiddleware",
+  "harness_run": "c6f49c08-a5d2-43b5-8558-73adabc99066",
+  "started_at": "2026-10-05T22:55:58.447783+00:00",
+  "root_run_id": "01a10e47-f208-77c3-8215-822af9014859",
+  "checks": [
+    {
+      "name": "call_adk",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "google_adk.session",
+      "ancestor": "call_adk",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "adk:get_weather",
+      "ancestor": "google_adk.session",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 58\u00b0F with drizzle.",
+    "tools": {
+      "call_adk": [
+        "{\"output\":\"The weather in San Francisco is currently 58\u00b0F with drizzle.\"}"
+      ]
+    }
+  }
+}

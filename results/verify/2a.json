@@ -1,0 +1,27 @@
+{
+  "case": "2a",
+  "title": "MCP client opened per tool call with to_headers()",
+  "harness_run": "ff8b11f4-1d19-419f-bf14-9c72bc84a145",
+  "root_run_id": "01a10e47-2f39-7020-94e0-a3cd67db5b7a",
+  "result": "PASS",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_mcp_weather",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "mcp:get_weather",
+      "ancestor": "call_mcp_weather",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "runner_error": null
+}

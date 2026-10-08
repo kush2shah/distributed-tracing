@@ -1,0 +1,27 @@
+{
+  "case": "1a",
+  "title": "RemoteGraph(distributed_tracing=True), fixed factory",
+  "harness_run": "961c841e-a69d-41ed-b083-4ac3214c88f0",
+  "root_run_id": "01a10e45-cee2-7c33-a612-7bdd2c9823e4",
+  "result": "PASS",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "call_child",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "child:lookup_weather",
+      "ancestor": "call_child",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "runner_error": null
+}

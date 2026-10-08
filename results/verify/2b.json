@@ -1,0 +1,27 @@
+{
+  "case": "2b",
+  "title": "Long-lived MCPAdapter client, httpx Auth adds headers per request",
+  "harness_run": "4cb9665b-07b2-4d3c-a8bf-c6c88b1c3471",
+  "root_run_id": "01a10e47-3f86-7cc1-9081-ef536c4e740f",
+  "result": "PASS",
+  "as_expected": true,
+  "verdicts": [
+    {
+      "name": "get_weather",
+      "ancestor": "ROOT",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "name": "mcp:get_weather",
+      "ancestor": "get_weather",
+      "project": "distributed-tracing",
+      "expect": "PASS",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "runner_error": null
+}

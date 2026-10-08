@@ -1,0 +1,20 @@
+"""Case 7 tool. The marker run lets verify.py find this agent's work in LangSmith."""
+
+import langsmith as ls
+from langchain.tools import tool
+from langchain_core.runnables import RunnableConfig
+
+
+@ls.traceable(name="mda:lookup_weather", run_type="tool")
+def _lookup_weather(city: str) -> str:
+    return f"MDA says: 50F and windy in {city}."
+
+
+@tool
+def mda_lookup_weather(city: str, config: RunnableConfig) -> str:
+    """Look up the weather for a city."""
+    # MDA only forwards x-mda-user-id from x-* headers, so the correlation ID comes
+    # from the caller's LangSmith metadata, which Agent Server always forwards.
+    configurable = config.get("configurable", {})
+    harness_run = (configurable.get("langsmith-metadata") or {}).get("harness_run")
+    return _lookup_weather(city, langsmith_extra={"metadata": {"harness_run": harness_run, "service": "mda_agent"}})

@@ -1,0 +1,41 @@
+{
+  "case": "3b",
+  "title": "ADK with configure_google_adk(project_name=<other>)",
+  "harness_run": "d8bb7063-f024-4a12-ab87-c11e144d38e4",
+  "started_at": "2026-10-05T22:56:05.533453+00:00",
+  "root_run_id": "01a10e48-0db5-7ea2-b5dc-e2a277550560",
+  "checks": [
+    {
+      "name": "call_adk",
+      "ancestor": "ROOT",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "PASS"
+    },
+    {
+      "name": "google_adk.session",
+      "ancestor": "call_adk",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    },
+    {
+      "name": "adk:get_weather",
+      "ancestor": "google_adk.session",
+      "projects": [
+        "distributed-tracing"
+      ],
+      "expect": "?"
+    }
+  ],
+  "notes": {
+    "answer": "The weather in San Francisco is currently 58\u00b0F with drizzle.",
+    "tools": {
+      "call_adk": [
+        "{\"output\":\"The weather in San Francisco is currently 58\u00b0F with drizzle.\"}"
+      ]
+    }
+  }
+}
