@@ -1,0 +1,15 @@
+{
+  "$schema": "https://langgra.ph/schema.json",
+  "dependencies": ["./common", "./child_langgraph"],
+  "graphs": {
+    "child": "./child_langgraph/agent.py:graph",
+    "child_docs": "./child_langgraph/agent.py:graph_docs",
+    "child_static": "./child_langgraph/agent.py:child_static",
+    "child_baggage": "./child_langgraph/agent.py:graph_baggage"
+  },
+  "http": {
+    "configurable_headers": {
+      "includes": ["baggage", "x-harness-*"]
+    }
+  }
+}

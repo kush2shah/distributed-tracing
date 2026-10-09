@@ -13,12 +13,13 @@ LangSmith and checks trace membership, ancestry, and project. Results are in
 | Path | What it is | Port |
 |---|---|---|
 | `parent_langgraph/` | Service A. A ReAct agent (`create_agent`) whose tools call each downstream service. `cases.py` defines and runs every case. | (client) |
-| `child_langgraph/` | Service B. A LangGraph agent on Agent Server (`langgraph dev`). `langgraph.json` exports four graph entries for case 1 and 6. | 2024 |
+| `child_langgraph/` | Service B. A LangGraph agent on Agent Server (`langgraph dev`), served by the root `langgraph.json`, which exports four graph entries for cases 1 and 6. | 2024 |
 | `mcp_server/` | FastMCP server (`get_weather`, `add`). Each tool continues the caller's trace from the request headers. | 8001 |
 | `adk_service/` | Google ADK agent behind FastAPI with `TracingMiddleware` and `configure_google_adk()`. A second copy on 8004 sets its own project name (case 3b). | 8002, 8004 |
 | `strands_service/` | AWS Strands agent behind FastAPI with LangSmith's OTel exporter. One route per bridging strategy (case 4). | 8003 |
 | `mda_agent/` | A minimal Managed Deep Agent under `mda dev` (case 7), plus a patched copy of its build on 2026 (case 7c). | 2025, 2026 |
 | `common/` | Shared package: settings, trace-header helpers, MCP client variants, run records. | |
+| `langgraph.json` | Agent Server config for the child. It sits at the repo root so a deployment's build includes `common/`. | |
 | `verify.py` | Polls LangSmith for each case's runs and writes `results/verify/<case>.json` and `results/matrix.md`. | |
 | `scripts/services.sh` | Starts and stops all services (logs in `.logs/`). | |
 
@@ -78,6 +79,32 @@ its root run ID and the runs it expects in `results/runs/<case>.json`.
 | **5** | Three hops | LangGraph → child LangGraph → MCP |
 | **6a–6f** | Case 5 + replicas | Second project, then second workspace, adding one fix per step |
 | **7a–7c** | LangGraph → Managed Deep Agents | As shipped, with tool-call middleware, and with the generated factory patched |
+
+## Deploy the child to LangSmith
+
+The child's Agent Server config is the root `langgraph.json`. It lists
+`./common` and `./child_langgraph` as dependencies, because the child imports
+the shared package and a deployment only builds what the config's directory
+contains. Point the deployment at the **repo root**, not `child_langgraph/`.
+
+Deployment settings:
+
+- Set `OPENAI_API_KEY` and `OPENAI_BASE_URL` as deployment secrets.
+- Deploy into the **same workspace** as the `LANGSMITH_API_KEY` the parent uses.
+  The deployment writes runs with its own key, so a different workspace makes
+  the trace look split even when propagation works.
+
+To run cases against the deployment, add to `.env`:
+
+```bash
+HARNESS_CHILD_URL=https://<deployment-url>   # used instead of http://127.0.0.1:2024
+HARNESS_MCP_URL=https://<reachable-mcp-host> # cases 5 and 6: the deployed child calls MCP here
+```
+
+The LangGraph SDK sends `LANGSMITH_API_KEY` as `x-api-key`, which a deployment
+requires. Cases 1a–1d need only `HARNESS_CHILD_URL`. In cases 5 and 6 the
+deployed child calls MCP, so the MCP server must be reachable from the
+deployment; `127.0.0.1` inside a deployment is the deployment itself.
 
 ## How verification works
 

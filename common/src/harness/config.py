@@ -34,5 +34,15 @@ PORTS = {
 }
 
 
+# Point the harness at deployed services instead of local ones. The LangGraph
+# SDK sends LANGSMITH_API_KEY as x-api-key, which a LangSmith deployment requires.
+URL_OVERRIDES = {
+    "child_langgraph": os.environ.get("HARNESS_CHILD_URL"),
+    "mcp_server": os.environ.get("HARNESS_MCP_URL"),
+}
+
+
 def url(service: str) -> str:
+    if override := URL_OVERRIDES.get(service):
+        return override.rstrip("/")
     return f"http://127.0.0.1:{PORTS[service]}"
