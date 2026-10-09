@@ -1,9 +1,9 @@
 {
   "case": "6d",
   "title": "Project replica, SDK headers + replicas re-added to baggage, raw-baggage factory",
-  "harness_run": "9c9b8d97-abd1-4dd5-9f5f-46bc4844a4a4",
-  "started_at": "2026-10-05T23:01:36.020997+00:00",
-  "root_run_id": "01a10e4d-18b1-7363-8dc6-8b6a22842b48",
+  "harness_run": "ffa608ba-b249-4560-af80-c3e7c5992fd9",
+  "started_at": "2026-10-09T18:12:37.760902+00:00",
+  "root_run_id": "01a121dd-f91b-7022-b7e1-ebf5323bad4f",
   "checks": [
     {
       "name": "call_child",

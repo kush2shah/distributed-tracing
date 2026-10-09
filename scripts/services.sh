@@ -9,7 +9,7 @@ mkdir -p "$LOGS" "$PIDS"
 # name|directory|port|command
 SERVICES=(
   "mcp_server|mcp_server|8001|uv run python server.py"
-  "child_langgraph|child_langgraph|2024|uv run langgraph dev --port 2024 --no-browser --no-reload --allow-blocking"
+  "child_langgraph|.|2024|uv run --project child_langgraph langgraph dev --port 2024 --no-browser --no-reload --allow-blocking"
   "adk_service|adk_service|8002|uv run python app.py"
   "adk_service_override|adk_service|8004|env PORT=8004 ADK_PROJECT=__ADK_OVERRIDE__ uv run python app.py"
   "strands_service|strands_service|8003|uv run python app.py"
